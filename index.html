@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,22 +27,72 @@
 <div class="langs"><a href="index.html" aria-current="page">EN</a> <a href="zh.html">中文</a> <a href="fr.html">FR</a></div>
 </header>
 <main>
-<h1>Hi, I’m Siyao Zhang.</h1>
-<p>I work on AI agents for manufacturing, and on the evals that tell us whether they actually got better.</p>
+<section class="hero">
+<h1><span class="greet" data-words='[&quot;Hi&quot;, &quot;你好&quot;, &quot;Bonjour&quot;, &quot;こんにちは&quot;]'>Hi</span>, I’m Siyao.</h1>
+<p>AI agents for manufacturing, and the evals that tell us if they got better.</p>
+</section>
+<div class="col">
 <p>Right now I’m at Yuanmu, an industrial-AI startup in Beijing. I’ve designed, tested and shipped skills for our production-scheduling agent, starting from real needs that came up in customer conversations and iterating quickly. I also built the evaluation tools we use to compare models. Lately I’ve been working with our 0-to-1 product team on an AI workbench that helps manufacturing engineers go from a customer’s drawing to a process plan and a quote. It has pulled me into the layer underneath: how agents get their tools, memory and checks, and how to make product decisions for AI.</p>
 <p>Before that, I studied economics and Japanese in Beijing, spent a year in Tokyo, and did a two-year master’s in Paris on a CSC scholarship. I started building with Claude Code in 2026, and this is my prototype site.</p>
 <p>Outside of work, I make short videos about learning AI and tech, and travel around the world.</p>
 <h2 id="now">Now</h2>
-<p>I’m finishing a finance master’s at UIBE, with a thesis on how Chinese chip stocks reacted to US export controls. At work I’m learning how an agent harness gets built for one industry, so on the side I’m building a small one of my own. I graduate in June 2027 and I’m looking for AI product and engineering roles. I can start an internship from January. <span class="now-date">(November 2026)</span></p>
+<p class="now">I’m finishing a finance master’s at UIBE, with a thesis on how Chinese chip stocks reacted to US export controls. At work I’m learning how an agent harness gets built for one industry, so on the side I’m building a small one of my own. I graduate in June 2027 and I’m looking for AI product and engineering roles. I can start an internship from January. <span class="now-date">(November 2026)</span></p>
+</div>
 <h2 id="work">Things I’ve made</h2>
-<p class="lede">Small things, mostly built to solve my own problems.</p>
-<article class="project"><h3>A task board my AI agents and I share</h3><span class="year">2026</span><p>An early project with Claude Code: a markdown task board that my agents and I both edit. Every new session reads it first, so the AI remembers what we’re working on, and in my own setup anything waiting on me goes onto my calendar. Better tools have caught up on some of this. What stayed with me is the question of what an agent should remember, and when it should hand a decision back to a person.</p><div class="links"><a href="https://github.com/Siyaovo/md-task-router" rel="noopener">Code</a></div></article>
-<article class="project"><h3>AI Tutor</h3><span class="year">2026</span><p>One README that turns Claude Code into a tutor. It writes a lesson, asks you three questions, and picks the next lesson based on which ideas you actually understood. The demo video got about 110,000 views on Douyin, more than anything else I’ve made.</p><div class="links"><a href="https://github.com/Siyaovo/interactive-learning-system" rel="noopener">Code</a></div></article>
-<article class="project"><h3>A content workflow for my videos</h3><span class="year">2026</span><p>One agent with eight skills: topic filter, script, hook, title, an AI-writing check, benchmarking and data review. After each video, the review skill writes what the numbers showed into a shared methodology file that the topic filter reads next time. So far the file has retired four kinds of content I used to make.</p></article>
-<article class="project"><h3>Rooted (根)</h3><span class="year">2026</span><p>Drag a slider and watch a Chinese character change from oracle-bone script to its modern form. I made it for learners who memorise characters one at a time without seeing the logic. One rule I kept: no invented etymology. When a character isn’t a picture of something, it shows its parts instead.</p><div class="links"><a href="https://rooted-azure.vercel.app" rel="noopener">Live demo</a></div></article>
-<article class="project"><h3>A function-calling agent, without a framework</h3><span class="year">2026</span><p>About 350 lines of Python on Anthropic’s tool-use API, written to see what frameworks hide. Five tools, a guard against reading files outside its folder, and 13 tests.</p><div class="links"><a href="https://github.com/Siyaovo/function-calling-demo" rel="noopener">Code</a></div></article>
-<article class="project"><h3>South Africa’s electricity system</h3><span class="year">2025</span><p>A university group project in Paris, mentored by Deloitte. We forecast demand with six models and optimised dispatch in Python. A simple SARIMAX held up better than LSTM and TFT under supply stress, and in our scenario 5% more renewables cut load shedding from 712 to 118 hours a year.</p><div class="links"><a href="deloitte-energy-case-study.pdf">Case study (PDF)</a><a href="https://github.com/Siyaovo/south-africa-electricity-analysis" rel="noopener">Code</a></div></article>
-<article class="project"><h3>How exposed European jobs are to robots</h3><span class="year">2025</span><p>Group research for a Big Data for Development course at Panthéon-Sorbonne. We built an exposure index for occupations from patent and job-description text. Across 34 countries, one standard deviation more exposure went with about 7% lower hourly wages.</p><div class="links"><a href="robotics-exposure-poster.pdf">Poster (PDF)</a><a href="https://github.com/Siyaovo/robotics-exposure-europe" rel="noopener">Code</a></div></article>
+<p class="lede col">Small things, mostly built to solve my own problems.</p>
+<div class="grid">
+<article class="project"><figure><span class="file">task-board.md</span><pre><span class="h">## [TASK-001] Summarise yesterday's meeting notes</span>
+
+- **Who**: Claude
+- **Status**: ready
+
+<span class="h">## [TASK-002] Draft blog post outline</span>
+
+- **Who**: Claude
+- **Status**: blocked:human:pick-thesis-angle
+
+<span class="h">## [TASK-003] Run a weekly review</span>
+
+- **Status**: blocked:task:TASK-001</pre></figure><h3>A task board my AI agents and I share</h3><span class="year">2026</span><p>An early project with Claude Code: a markdown task board that my agents and I both edit. Every new session reads it first, so the AI remembers what we’re working on, and in my own setup anything waiting on me goes onto my calendar. Better tools have caught up on some of this. What stayed with me is the question of what an agent should remember, and when it should hand a decision back to a person.</p><div class="links"><a href="https://github.com/Siyaovo/md-task-router" rel="noopener">Code</a></div></article>
+<article class="project"><figure><span class="file">Learning/</span><pre>Learning/
+<span class="m">├── </span>README.md
+<span class="m">├── </span>反脆弱/
+<span class="m">│   ├── </span>01-什么是反脆弱.md
+<span class="m">│   ├── </span>02-….md
+<span class="m">│   └── </span>…
+<span class="m">└── </span>下一个课题/
+
+01 → read → answer 3 questions → "done"
+<span class="m">   </span>→ AI reads your answers → writes 02</pre></figure><h3>AI Tutor</h3><span class="year">2026</span><p>One README that turns Claude Code into a tutor. It writes a lesson, asks you three questions, and picks the next lesson based on which ideas you actually understood. The demo video got about 110,000 views on Douyin, more than anything else I’ve made.</p><div class="links"><a href="https://github.com/Siyaovo/interactive-learning-system" rel="noopener">Code</a></div></article>
+<article class="project"><figure><span class="file">methodology.md</span><pre><span class="h">## Retired, based on the numbers</span>
+
+- news roundups with no take
+- tool install tutorials
+- lifestyle posts without AI
+- abstract explainers
+
+<span class="h">## Kept</span>
+
+- timely × tested × a framework
+- real pain × workflow × result</pre></figure><h3>A content workflow for my videos</h3><span class="year">2026</span><p>One agent with eight skills: topic filter, script, hook, title, an AI-writing check, benchmarking and data review. After each video, the review skill writes what the numbers showed into a shared methodology file that the topic filter reads next time. So far the file has retired four kinds of content I used to make.</p></article>
+<article class="project"><figure><img src="img/rooted-crop.jpg" alt="Rooted showing the oracle-bone form of 马 (horse)" loading="lazy"></figure><h3>Rooted (根)</h3><span class="year">2026</span><p>Drag a slider and watch a Chinese character change from oracle-bone script to its modern form. I made it for learners who memorise characters one at a time without seeing the logic. One rule I kept: no invented etymology. When a character isn’t a picture of something, it shows its parts instead.</p><div class="links"><a href="https://rooted-azure.vercel.app" rel="noopener">Live demo</a></div></article>
+<article class="project"><figure><span class="file">agent.py</span><pre><span class="k">if</span> response.stop_reason == <span class="s">"end_turn"</span>:
+    <span class="k">return</span> text_of(response)
+
+tool_results = []
+<span class="k">for</span> block <span class="k">in</span> response.content:
+    <span class="k">if</span> block.type != <span class="s">"tool_use"</span>:
+        <span class="k">continue</span>
+    tool_results.append({
+        <span class="s">"type"</span>: <span class="s">"tool_result"</span>,
+        <span class="s">"tool_use_id"</span>: block.id,
+        <span class="s">"content"</span>: run_tool(block),
+    })
+messages.append({<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: tool_results})</pre></figure><h3>A function-calling agent, without a framework</h3><span class="year">2026</span><p>About 350 lines of Python on Anthropic’s tool-use API, written to see what frameworks hide. Five tools, a guard against reading files outside its folder, and 13 tests.</p><div class="links"><a href="https://github.com/Siyaovo/function-calling-demo" rel="noopener">Code</a></div></article>
+<article class="project"><figure><img src="deloitte-chart.png" alt="Demand forecasts from six models against actual demand" loading="lazy"></figure><h3>South Africa’s electricity system</h3><span class="year">2025</span><p>A university group project in Paris, mentored by Deloitte. We forecast demand with six models and optimised dispatch in Python. A simple SARIMAX held up better than LSTM and TFT under supply stress, and in our scenario 5% more renewables cut load shedding from 712 to 118 hours a year.</p><div class="links"><a href="deloitte-energy-case-study.pdf">Case study (PDF)</a><a href="https://github.com/Siyaovo/south-africa-electricity-analysis" rel="noopener">Code</a></div></article>
+<article class="project"><figure><img src="robotics-preview.jpg" alt="Research poster on robotics exposure in European labour markets" loading="lazy"></figure><h3>How exposed European jobs are to robots</h3><span class="year">2025</span><p>Group research for a Big Data for Development course at Panthéon-Sorbonne. We built an exposure index for occupations from patent and job-description text. Across 34 countries, one standard deviation more exposure went with about 7% lower hourly wages.</p><div class="links"><a href="robotics-exposure-poster.pdf">Poster (PDF)</a><a href="https://github.com/Siyaovo/robotics-exposure-europe" rel="noopener">Code</a></div></article>
+</div>
+<div class="col">
 <h2 id="background">Background</h2>
 <dl>
 <dt>2026 – now</dt><dd>AI Agent Product Intern, Yuanmu, Beijing</dd>
@@ -55,8 +105,20 @@
 <p class="note">At UIBE I also led a 60-person volunteer association and coordinated our volunteer team at the Beijing 2022 Winter Olympics. I speak Chinese, English and Japanese, and a bit of French.</p>
 <h2 id="contact">Contact</h2>
 <p>Email is the best way to reach me: <a href="mailto:siyao.zhang00@gmail.com">siyao.zhang00@gmail.com</a>. I’m also on <a href="https://www.linkedin.com/in/siyao-z-707906320/" rel="noopener">LinkedIn</a> and <a href="https://github.com/Siyaovo" rel="noopener">GitHub</a>. Happy to send my CV.</p>
-</main>
-<footer>Updated November 2026</footer>
 </div>
+</main>
+<footer><span>Siyao Zhang</span><span>Updated November 2026</span></footer>
+</div>
+<script>
+(function(){
+  var el=document.querySelector('.greet'); if(!el) return;
+  var words=JSON.parse(el.getAttribute('data-words')), i=0;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(function(){
+    el.classList.add('out');
+    setTimeout(function(){ i=(i+1)%words.length; el.textContent=words[i]; el.classList.remove('out'); },350);
+  },2600);
+})();
+</script>
 </body>
 </html>

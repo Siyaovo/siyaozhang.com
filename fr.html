@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,22 +27,72 @@
 <div class="langs"><a href="index.html">EN</a> <a href="zh.html">中文</a> <a href="fr.html" aria-current="page">FR</a></div>
 </header>
 <main>
-<h1>Bonjour, je suis Siyao Zhang.</h1>
-<p>Je travaille sur des agents IA pour l’industrie, et sur les évaluations qui disent s’ils se sont vraiment améliorés.</p>
+<section class="hero">
+<h1><span class="greet" data-words='[&quot;Bonjour&quot;, &quot;Hi&quot;, &quot;你好&quot;, &quot;こんにちは&quot;]'>Bonjour</span>, je suis Siyao.</h1>
+<p>Des agents IA pour l’industrie, et les évaluations qui disent s’ils se sont améliorés.</p>
+</section>
+<div class="col">
 <p>Aujourd’hui, je suis chez Yuanmu, une start-up d’IA industrielle à Pékin. J’ai conçu, testé et mis en production des skills pour notre agent de planification, à partir de besoins réels apparus dans les échanges avec les clients, en itérant vite. J’ai aussi construit les outils d’évaluation que nous utilisons pour comparer les modèles. Depuis peu, je travaille avec notre équipe produit 0-to-1 sur un atelier IA qui aide les ingénieurs à passer d’un plan client à une gamme de fabrication et à un devis. Cela m’a fait descendre d’un niveau : comment les agents obtiennent leurs outils, leur mémoire et leurs vérifications, et comment prendre des décisions produit pour l’IA.</p>
 <p>Avant cela, j’ai étudié l’économie et le japonais à Pékin, passé un an à Tokyo, puis fait un master de deux ans à Paris grâce à une bourse CSC. J’ai commencé à construire avec Claude Code en 2026, et ce site en est le prototype.</p>
 <p>En dehors du travail, je fais de courtes vidéos sur l’apprentissage de l’IA et de la tech, et je voyage dès que je peux.</p>
 <h2 id="now">En ce moment</h2>
-<p>Je termine un master de finance à l’UIBE, avec un mémoire sur la réaction des actions chinoises de semi-conducteurs aux contrôles américains à l’exportation. Au travail, j’apprends comment se construit un harness d’agents pour une industrie, alors j’en construis un petit de mon côté. Je serai diplômée en juin 2027 et je cherche des postes en produit ou en ingénierie IA. Je peux commencer un stage dès janvier. <span class="now-date">(novembre 2026)</span></p>
+<p class="now">Je termine un master de finance à l’UIBE, avec un mémoire sur la réaction des actions chinoises de semi-conducteurs aux contrôles américains à l’exportation. Au travail, j’apprends comment se construit un harness d’agents pour une industrie, alors j’en construis un petit de mon côté. Je serai diplômée en juin 2027 et je cherche des postes en produit ou en ingénierie IA. Je peux commencer un stage dès janvier. <span class="now-date">(novembre 2026)</span></p>
+</div>
 <h2 id="work">Ce que j’ai fait</h2>
-<p class="lede">De petites choses, souvent construites pour régler mes propres problèmes.</p>
-<article class="project"><h3>Un tableau de tâches partagé avec mes agents</h3><span class="year">2026</span><p>Un de mes premiers projets avec Claude Code : un tableau de tâches en Markdown que mes agents et moi modifions tous les deux. Chaque nouvelle session le lit d’abord, donc l’IA sait ce sur quoi on travaille, et dans mon installation, ce qui attend une décision de ma part arrive dans mon agenda. De meilleurs outils font maintenant une partie de cela. Ce qui m’est resté, c’est la question de ce qu’un agent doit retenir, et du moment où il doit rendre la décision à une personne.</p><div class="links"><a href="https://github.com/Siyaovo/md-task-router" rel="noopener">Code</a></div></article>
-<article class="project"><h3>AI Tutor</h3><span class="year">2026</span><p>Un README qui transforme Claude Code en tuteur. Il écrit une leçon, pose trois questions, puis choisit la leçon suivante selon les idées vraiment comprises. La vidéo de démo a fait environ 110 000 vues sur Douyin, plus que tout ce que j’ai fait d’autre.</p><div class="links"><a href="https://github.com/Siyaovo/interactive-learning-system" rel="noopener">Code</a></div></article>
-<article class="project"><h3>Un workflow pour mes vidéos</h3><span class="year">2026</span><p>Un agent avec huit skills : filtre de sujets, script, accroche, titre, détection du style IA, benchmark et analyse des données. Après chaque vidéo, la skill d’analyse écrit ce que les chiffres ont montré dans un fichier de méthodologie partagé, que le filtre relit la fois suivante. Ce fichier a déjà écarté quatre types de contenu que je faisais avant.</p></article>
-<article class="project"><h3>Rooted (根)</h3><span class="year">2026</span><p>On fait glisser un curseur et un caractère chinois passe de l’écriture oraculaire à sa forme moderne. Je l’ai fait pour les apprenants qui mémorisent les caractères un par un sans en voir la logique. Une règle : pas d’étymologie inventée. Quand un caractère n’est pas un pictogramme, il montre ses composants.</p><div class="links"><a href="https://rooted-azure.vercel.app" rel="noopener">Démo</a></div></article>
-<article class="project"><h3>Un agent à appels de fonctions, sans framework</h3><span class="year">2026</span><p>Environ 350 lignes de Python sur l’API tool use d’Anthropic, pour voir ce que les frameworks cachent. Cinq outils, une protection contre la lecture de fichiers hors de son dossier, et 13 tests.</p><div class="links"><a href="https://github.com/Siyaovo/function-calling-demo" rel="noopener">Code</a></div></article>
-<article class="project"><h3>Le système électrique sud-africain</h3><span class="year">2025</span><p>Un projet de groupe universitaire à Paris, encadré par Deloitte. Nous avons prévu la demande avec six modèles et optimisé le dispatch en Python. Un simple SARIMAX a mieux résisté que LSTM et TFT en période de tension, et dans notre scénario, 5 % de renouvelables en plus faisaient passer les délestages de 712 à 118 heures par an.</p><div class="links"><a href="deloitte-energy-case-study.pdf">Étude de cas (PDF)</a><a href="https://github.com/Siyaovo/south-africa-electricity-analysis" rel="noopener">Code</a></div></article>
-<article class="project"><h3>L’exposition des emplois européens aux robots</h3><span class="year">2025</span><p>Recherche de groupe pour le cours Big Data for Development à Panthéon-Sorbonne. Nous avons construit un indice d’exposition des métiers à partir de brevets et d’offres d’emploi. Dans 34 pays, un écart-type d’exposition en plus allait avec des salaires horaires environ 7 % plus bas.</p><div class="links"><a href="robotics-exposure-poster.pdf">Poster (PDF)</a><a href="https://github.com/Siyaovo/robotics-exposure-europe" rel="noopener">Code</a></div></article>
+<p class="lede col">De petites choses, souvent construites pour régler mes propres problèmes.</p>
+<div class="grid">
+<article class="project"><figure><span class="file">task-board.md</span><pre><span class="h">## [TASK-001] Summarise yesterday's meeting notes</span>
+
+- **Who**: Claude
+- **Status**: ready
+
+<span class="h">## [TASK-002] Draft blog post outline</span>
+
+- **Who**: Claude
+- **Status**: blocked:human:pick-thesis-angle
+
+<span class="h">## [TASK-003] Run a weekly review</span>
+
+- **Status**: blocked:task:TASK-001</pre></figure><h3>Un tableau de tâches partagé avec mes agents</h3><span class="year">2026</span><p>Un de mes premiers projets avec Claude Code : un tableau de tâches en Markdown que mes agents et moi modifions tous les deux. Chaque nouvelle session le lit d’abord, donc l’IA sait ce sur quoi on travaille, et dans mon installation, ce qui attend une décision de ma part arrive dans mon agenda. De meilleurs outils font maintenant une partie de cela. Ce qui m’est resté, c’est la question de ce qu’un agent doit retenir, et du moment où il doit rendre la décision à une personne.</p><div class="links"><a href="https://github.com/Siyaovo/md-task-router" rel="noopener">Code</a></div></article>
+<article class="project"><figure><span class="file">Learning/</span><pre>Learning/
+<span class="m">├── </span>README.md
+<span class="m">├── </span>反脆弱/
+<span class="m">│   ├── </span>01-什么是反脆弱.md
+<span class="m">│   ├── </span>02-….md
+<span class="m">│   └── </span>…
+<span class="m">└── </span>下一个课题/
+
+01 → read → answer 3 questions → "done"
+<span class="m">   </span>→ AI reads your answers → writes 02</pre></figure><h3>AI Tutor</h3><span class="year">2026</span><p>Un README qui transforme Claude Code en tuteur. Il écrit une leçon, pose trois questions, puis choisit la leçon suivante selon les idées vraiment comprises. La vidéo de démo a fait environ 110 000 vues sur Douyin, plus que tout ce que j’ai fait d’autre.</p><div class="links"><a href="https://github.com/Siyaovo/interactive-learning-system" rel="noopener">Code</a></div></article>
+<article class="project"><figure><span class="file">methodology.md</span><pre><span class="h">## Écartés, d'après les chiffres</span>
+
+- revues d'actualité sans point de vue
+- tutoriels d'installation
+- vie quotidienne sans IA
+- explications abstraites
+
+<span class="h">## Gardés</span>
+
+- actualité × test × cadre
+- vrai problème × workflow × résultat</pre></figure><h3>Un workflow pour mes vidéos</h3><span class="year">2026</span><p>Un agent avec huit skills : filtre de sujets, script, accroche, titre, détection du style IA, benchmark et analyse des données. Après chaque vidéo, la skill d’analyse écrit ce que les chiffres ont montré dans un fichier de méthodologie partagé, que le filtre relit la fois suivante. Ce fichier a déjà écarté quatre types de contenu que je faisais avant.</p></article>
+<article class="project"><figure><img src="img/rooted-crop.jpg" alt="Rooted montre la forme oraculaire de 马 (cheval)" loading="lazy"></figure><h3>Rooted (根)</h3><span class="year">2026</span><p>On fait glisser un curseur et un caractère chinois passe de l’écriture oraculaire à sa forme moderne. Je l’ai fait pour les apprenants qui mémorisent les caractères un par un sans en voir la logique. Une règle : pas d’étymologie inventée. Quand un caractère n’est pas un pictogramme, il montre ses composants.</p><div class="links"><a href="https://rooted-azure.vercel.app" rel="noopener">Démo</a></div></article>
+<article class="project"><figure><span class="file">agent.py</span><pre><span class="k">if</span> response.stop_reason == <span class="s">"end_turn"</span>:
+    <span class="k">return</span> text_of(response)
+
+tool_results = []
+<span class="k">for</span> block <span class="k">in</span> response.content:
+    <span class="k">if</span> block.type != <span class="s">"tool_use"</span>:
+        <span class="k">continue</span>
+    tool_results.append({
+        <span class="s">"type"</span>: <span class="s">"tool_result"</span>,
+        <span class="s">"tool_use_id"</span>: block.id,
+        <span class="s">"content"</span>: run_tool(block),
+    })
+messages.append({<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: tool_results})</pre></figure><h3>Un agent à appels de fonctions, sans framework</h3><span class="year">2026</span><p>Environ 350 lignes de Python sur l’API tool use d’Anthropic, pour voir ce que les frameworks cachent. Cinq outils, une protection contre la lecture de fichiers hors de son dossier, et 13 tests.</p><div class="links"><a href="https://github.com/Siyaovo/function-calling-demo" rel="noopener">Code</a></div></article>
+<article class="project"><figure><img src="deloitte-chart.png" alt="Prévisions de six modèles comparées à la demande réelle" loading="lazy"></figure><h3>Le système électrique sud-africain</h3><span class="year">2025</span><p>Un projet de groupe universitaire à Paris, encadré par Deloitte. Nous avons prévu la demande avec six modèles et optimisé le dispatch en Python. Un simple SARIMAX a mieux résisté que LSTM et TFT en période de tension, et dans notre scénario, 5 % de renouvelables en plus faisaient passer les délestages de 712 à 118 heures par an.</p><div class="links"><a href="deloitte-energy-case-study.pdf">Étude de cas (PDF)</a><a href="https://github.com/Siyaovo/south-africa-electricity-analysis" rel="noopener">Code</a></div></article>
+<article class="project"><figure><img src="robotics-preview.jpg" alt="Poster de recherche sur l’exposition aux robots en Europe" loading="lazy"></figure><h3>L’exposition des emplois européens aux robots</h3><span class="year">2025</span><p>Recherche de groupe pour le cours Big Data for Development à Panthéon-Sorbonne. Nous avons construit un indice d’exposition des métiers à partir de brevets et d’offres d’emploi. Dans 34 pays, un écart-type d’exposition en plus allait avec des salaires horaires environ 7 % plus bas.</p><div class="links"><a href="robotics-exposure-poster.pdf">Poster (PDF)</a><a href="https://github.com/Siyaovo/robotics-exposure-europe" rel="noopener">Code</a></div></article>
+</div>
+<div class="col">
 <h2 id="background">Parcours</h2>
 <dl>
 <dt>2026 – auj.</dt><dd>Stagiaire produit agents IA, Yuanmu, Pékin</dd>
@@ -55,8 +105,20 @@
 <p class="note">À l’UIBE, j’ai aussi dirigé une association de 60 bénévoles et coordonné notre équipe de volontaires aux Jeux d’hiver de Pékin 2022. Je parle chinois, anglais et japonais ; mon français reste modeste, merci de votre indulgence.</p>
 <h2 id="contact">Contact</h2>
 <p>Le plus simple, c’est un e-mail : <a href="mailto:siyao.zhang00@gmail.com">siyao.zhang00@gmail.com</a>. Je suis aussi sur <a href="https://www.linkedin.com/in/siyao-z-707906320/" rel="noopener">LinkedIn</a> et <a href="https://github.com/Siyaovo" rel="noopener">GitHub</a>. Je vous envoie volontiers mon CV.</p>
-</main>
-<footer>Mis à jour en novembre 2026</footer>
 </div>
+</main>
+<footer><span>Siyao Zhang</span><span>Mis à jour en novembre 2026</span></footer>
+</div>
+<script>
+(function(){
+  var el=document.querySelector('.greet'); if(!el) return;
+  var words=JSON.parse(el.getAttribute('data-words')), i=0;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(function(){
+    el.classList.add('out');
+    setTimeout(function(){ i=(i+1)%words.length; el.textContent=words[i]; el.classList.remove('out'); },350);
+  },2600);
+})();
+</script>
 </body>
 </html>

@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,22 +27,72 @@
 <div class="langs"><a href="index.html">EN</a> <a href="zh.html" aria-current="page">中文</a> <a href="fr.html">FR</a></div>
 </header>
 <main>
-<h1>你好，我是张思瑶。</h1>
-<p>我做制造业的 AI Agent，以及判断它们是否真的变好的评测。</p>
+<section class="hero">
+<h1><span class="greet" data-words='[&quot;你好&quot;, &quot;Hi&quot;, &quot;Bonjour&quot;, &quot;こんにちは&quot;]'>你好</span>，我是思瑶。</h1>
+<p>做制造业的 AI Agent，也做判断它有没有变好的评测。</p>
+</section>
+<div class="col">
 <p>目前我在北京的工业 AI 创业公司圆木。我从客户沟通里暴露出的真实需求出发，为排产 Agent 设计、测试并上线 Skill，快速试错迭代；也搭了团队用来对比模型的评测工具。最近我在 0 到 1 的产品团队里，参与一个 AI 工作台：帮制造业工程师从客户图纸一路做到工艺方案和报价。这让我往下钻了一层：Agent 怎么拿到工具、记忆和检查机制，以及 AI 产品该怎么做决策。</p>
 <p>在这之前，我在北京读经济和日语，在东京交换一年，又拿国家留学基金委奖学金在巴黎读了两年硕士。2026 年开始用 Claude Code 做东西，这个网站就是原型。</p>
 <p>工作之外，我拍学 AI 和科技的短视频，也到处旅行。</p>
 <h2 id="now">现在</h2>
-<p>我在对外经济贸易大学读金融硕士的最后一年，论文研究美国出口管制下 A 股芯片股的反应。工作上在学一个行业的 Agent Harness 怎么搭，所以业余也在自己搭一个小的。2027 年 6 月毕业，在看 AI 产品和工程方向的机会，2027 年 1 月起可以实习。 <span class="now-date">(2026 年 11 月)</span></p>
+<p class="now">我在对外经济贸易大学读金融硕士的最后一年，论文研究美国出口管制下 A 股芯片股的反应。工作上在学一个行业的 Agent Harness 怎么搭，所以业余也在自己搭一个小的。2027 年 6 月毕业，在看 AI 产品和工程方向的机会，2027 年 1 月起可以实习。 <span class="now-date">(2026 年 11 月)</span></p>
+</div>
 <h2 id="work">做过的东西</h2>
-<p class="lede">都不大，多数是为了解决自己的问题。</p>
-<article class="project"><h3>和 AI Agent 共用的任务看板</h3><span class="year">2026</span><p>用 Claude Code 做的早期项目：一个我和 Agent 都会编辑的 Markdown 任务看板。每次新对话先读它，AI 就记得我们在做什么；在我自己的配置里，卡在我这里的事会直接进日程。现在更好的工具已经能做到其中一部分，但它让我一直在想：Agent 该记住什么，什么时候该把决定交还给人。</p><div class="links"><a href="https://github.com/Siyaovo/md-task-router" rel="noopener">代码</a></div></article>
-<article class="project"><h3>AI Tutor</h3><span class="year">2026</span><p>一个 README，把 Claude Code 变成老师：先讲一课，问你三个问题，再根据你真正懂了哪些概念决定下一课。演示视频在抖音大约 11 万播放，是我做过的东西里看的人最多的。</p><div class="links"><a href="https://github.com/Siyaovo/interactive-learning-system" rel="noopener">代码</a></div></article>
-<article class="project"><h3>给自己短视频用的内容工作流</h3><span class="year">2026</span><p>一个 Agent 加八个 Skill：选题过滤、脚本、开头、标题、AI 痕迹检查、对标和数据复盘。每条视频发完，复盘 Skill 会把数据结论写进一份共享的方法论文件，下次选题过滤时读取。到现在，这份文件已经淘汰了我以前常做的四类内容。</p></article>
-<article class="project"><h3>Rooted（根）</h3><span class="year">2026</span><p>拖动滑块，看一个汉字从甲骨文变成今天的写法。做给一个字一个字死记、看不到字形逻辑的学习者。我守住的一条：不编字源。不是象形字的，就拆成部件来讲。</p><div class="links"><a href="https://rooted-azure.vercel.app" rel="noopener">在线体验</a></div></article>
-<article class="project"><h3>不用框架写的函数调用 Agent</h3><span class="year">2026</span><p>大约 350 行 Python，直接用 Anthropic 的工具调用接口，想看清框架帮我们藏了什么。五个工具，一道防止读取文件夹以外文件的检查，13 个测试。</p><div class="links"><a href="https://github.com/Siyaovo/function-calling-demo" rel="noopener">代码</a></div></article>
-<article class="project"><h3>南非电力系统</h3><span class="year">2025</span><p>在巴黎的大学小组项目，由德勤导师指导。我们用六个模型预测用电需求，并用 Python 优化电力调度。在供给紧张时，简单的 SARIMAX 比 LSTM 和 TFT 更稳；在我们的情景里，可再生能源增加 5%，每年限电时长从 712 小时降到 118 小时。</p><div class="links"><a href="deloitte-energy-case-study.pdf">案例报告（PDF）</a><a href="https://github.com/Siyaovo/south-africa-electricity-analysis" rel="noopener">代码</a></div></article>
-<article class="project"><h3>欧洲岗位受机器人影响的程度</h3><span class="year">2025</span><p>巴黎一大「发展大数据」课程的小组研究。我们用专利和岗位描述文本，给各职业做了机器人暴露指数。在 34 个国家里，暴露度每高一个标准差，时薪平均低约 7%。</p><div class="links"><a href="robotics-exposure-poster.pdf">海报（PDF）</a><a href="https://github.com/Siyaovo/robotics-exposure-europe" rel="noopener">代码</a></div></article>
+<p class="lede col">都不大，多数是为了解决自己的问题。</p>
+<div class="grid">
+<article class="project"><figure><span class="file">task-board.md</span><pre><span class="h">## [TASK-001] Summarise yesterday's meeting notes</span>
+
+- **Who**: Claude
+- **Status**: ready
+
+<span class="h">## [TASK-002] Draft blog post outline</span>
+
+- **Who**: Claude
+- **Status**: blocked:human:pick-thesis-angle
+
+<span class="h">## [TASK-003] Run a weekly review</span>
+
+- **Status**: blocked:task:TASK-001</pre></figure><h3>和 AI Agent 共用的任务看板</h3><span class="year">2026</span><p>用 Claude Code 做的早期项目：一个我和 Agent 都会编辑的 Markdown 任务看板。每次新对话先读它，AI 就记得我们在做什么；在我自己的配置里，卡在我这里的事会直接进日程。现在更好的工具已经能做到其中一部分，但它让我一直在想：Agent 该记住什么，什么时候该把决定交还给人。</p><div class="links"><a href="https://github.com/Siyaovo/md-task-router" rel="noopener">代码</a></div></article>
+<article class="project"><figure><span class="file">Learning/</span><pre>Learning/
+<span class="m">├── </span>README.md
+<span class="m">├── </span>反脆弱/
+<span class="m">│   ├── </span>01-什么是反脆弱.md
+<span class="m">│   ├── </span>02-….md
+<span class="m">│   └── </span>…
+<span class="m">└── </span>下一个课题/
+
+01 → read → answer 3 questions → "done"
+<span class="m">   </span>→ AI reads your answers → writes 02</pre></figure><h3>AI Tutor</h3><span class="year">2026</span><p>一个 README，把 Claude Code 变成老师：先讲一课，问你三个问题，再根据你真正懂了哪些概念决定下一课。演示视频在抖音大约 11 万播放，是我做过的东西里看的人最多的。</p><div class="links"><a href="https://github.com/Siyaovo/interactive-learning-system" rel="noopener">代码</a></div></article>
+<article class="project"><figure><span class="file">methodology.md</span><pre><span class="h">## 已淘汰（按数据）</span>
+
+- 纯信息差
+- 工具教程
+- 没有 AI 的生活内容
+- 纯概念科普
+
+<span class="h">## 保留</span>
+
+- 时效 × 实测 × 框架
+- 真痛点 × 工作流 × 结果</pre></figure><h3>给自己短视频用的内容工作流</h3><span class="year">2026</span><p>一个 Agent 加八个 Skill：选题过滤、脚本、开头、标题、AI 痕迹检查、对标和数据复盘。每条视频发完，复盘 Skill 会把数据结论写进一份共享的方法论文件，下次选题过滤时读取。到现在，这份文件已经淘汰了我以前常做的四类内容。</p></article>
+<article class="project"><figure><img src="img/rooted-crop.jpg" alt="Rooted 展示「马」的甲骨文字形" loading="lazy"></figure><h3>Rooted（根）</h3><span class="year">2026</span><p>拖动滑块，看一个汉字从甲骨文变成今天的写法。做给一个字一个字死记、看不到字形逻辑的学习者。我守住的一条：不编字源。不是象形字的，就拆成部件来讲。</p><div class="links"><a href="https://rooted-azure.vercel.app" rel="noopener">在线体验</a></div></article>
+<article class="project"><figure><span class="file">agent.py</span><pre><span class="k">if</span> response.stop_reason == <span class="s">"end_turn"</span>:
+    <span class="k">return</span> text_of(response)
+
+tool_results = []
+<span class="k">for</span> block <span class="k">in</span> response.content:
+    <span class="k">if</span> block.type != <span class="s">"tool_use"</span>:
+        <span class="k">continue</span>
+    tool_results.append({
+        <span class="s">"type"</span>: <span class="s">"tool_result"</span>,
+        <span class="s">"tool_use_id"</span>: block.id,
+        <span class="s">"content"</span>: run_tool(block),
+    })
+messages.append({<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: tool_results})</pre></figure><h3>不用框架写的函数调用 Agent</h3><span class="year">2026</span><p>大约 350 行 Python，直接用 Anthropic 的工具调用接口，想看清框架帮我们藏了什么。五个工具，一道防止读取文件夹以外文件的检查，13 个测试。</p><div class="links"><a href="https://github.com/Siyaovo/function-calling-demo" rel="noopener">代码</a></div></article>
+<article class="project"><figure><img src="deloitte-chart.png" alt="六个模型的用电需求预测与实际值对比" loading="lazy"></figure><h3>南非电力系统</h3><span class="year">2025</span><p>在巴黎的大学小组项目，由德勤导师指导。我们用六个模型预测用电需求，并用 Python 优化电力调度。在供给紧张时，简单的 SARIMAX 比 LSTM 和 TFT 更稳；在我们的情景里，可再生能源增加 5%，每年限电时长从 712 小时降到 118 小时。</p><div class="links"><a href="deloitte-energy-case-study.pdf">案例报告（PDF）</a><a href="https://github.com/Siyaovo/south-africa-electricity-analysis" rel="noopener">代码</a></div></article>
+<article class="project"><figure><img src="robotics-preview.jpg" alt="欧洲劳动力市场机器人暴露研究海报" loading="lazy"></figure><h3>欧洲岗位受机器人影响的程度</h3><span class="year">2025</span><p>巴黎一大「发展大数据」课程的小组研究。我们用专利和岗位描述文本，给各职业做了机器人暴露指数。在 34 个国家里，暴露度每高一个标准差，时薪平均低约 7%。</p><div class="links"><a href="robotics-exposure-poster.pdf">海报（PDF）</a><a href="https://github.com/Siyaovo/robotics-exposure-europe" rel="noopener">代码</a></div></article>
+</div>
+<div class="col">
 <h2 id="background">经历</h2>
 <dl>
 <dt>2026 – 至今</dt><dd>AI Agent 产品实习生，圆木，北京</dd>
@@ -55,8 +105,20 @@
 <p class="note">在贸大时，我还带过一个 60 人的志愿者协会，协调过学校在北京 2022 年冬奥会的志愿者团队。会中文、英语、日语，还有一点法语。</p>
 <h2 id="contact">联系</h2>
 <p>最方便的是发邮件：<a href="mailto:siyao.zhang00@gmail.com">siyao.zhang00@gmail.com</a>。也可以在 <a href="https://www.linkedin.com/in/siyao-z-707906320/" rel="noopener">LinkedIn</a> 和 <a href="https://github.com/Siyaovo" rel="noopener">GitHub</a> 找到我。需要简历的话，发邮件给我就好。</p>
-</main>
-<footer>更新于 2026 年 11 月</footer>
 </div>
+</main>
+<footer><span>张思瑶</span><span>更新于 2026 年 11 月</span></footer>
+</div>
+<script>
+(function(){
+  var el=document.querySelector('.greet'); if(!el) return;
+  var words=JSON.parse(el.getAttribute('data-words')), i=0;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(function(){
+    el.classList.add('out');
+    setTimeout(function(){ i=(i+1)%words.length; el.textContent=words[i]; el.classList.remove('out'); },350);
+  },2600);
+})();
+</script>
 </body>
 </html>

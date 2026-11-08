@@ -8,6 +8,7 @@ Jekyll ignores folders that start with "_", so this script is not published.
 """
 
 import html
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -155,43 +156,156 @@ PAGES = {
     ),
 }
 
+GREETINGS = {"en": ["Hi", "你好", "Bonjour", "こんにちは"], "zh": ["你好", "Hi", "Bonjour", "こんにちは"], "fr": ["Bonjour", "Hi", "你好", "こんにちは"]}
+HERO = {"en": ("{g}, I’m Siyao.", "AI agents for manufacturing, and the evals that tell us if they got better."),
+        "zh": ("{g}，我是思瑶。", "做制造业的 AI Agent，也做判断它有没有变好的评测。"),
+        "fr": ("{g}, je suis Siyao.", "Des agents IA pour l’industrie, et les évaluations qui disent s’ils se sont améliorés.")}
+
+# One figure per project, same order as the projects list. Text figures show real content from each repo.
+FIGS = [
+    ("code", "task-board.md", """## [TASK-001] Summarise yesterday's meeting notes
+
+- **Who**: Claude
+- **Status**: ready
+
+## [TASK-002] Draft blog post outline
+
+- **Who**: Claude
+- **Status**: blocked:human:pick-thesis-angle
+
+## [TASK-003] Run a weekly review
+
+- **Status**: blocked:task:TASK-001
+"""),
+    ("code", "Learning/", """Learning/
+├── README.md
+├── 反脆弱/
+│   ├── 01-什么是反脆弱.md
+│   ├── 02-….md
+│   └── …
+└── 下一个课题/
+
+01 → read → answer 3 questions → "done"
+   → AI reads your answers → writes 02
+"""),
+    ("code", "methodology.md", {"en": """## Retired, based on the numbers
+
+- news roundups with no take
+- tool install tutorials
+- lifestyle posts without AI
+- abstract explainers
+
+## Kept
+
+- timely × tested × a framework
+- real pain × workflow × result
+""", "zh": """## 已淘汰（按数据）
+
+- 纯信息差
+- 工具教程
+- 没有 AI 的生活内容
+- 纯概念科普
+
+## 保留
+
+- 时效 × 实测 × 框架
+- 真痛点 × 工作流 × 结果
+""", "fr": """## Écartés, d'après les chiffres
+
+- revues d'actualité sans point de vue
+- tutoriels d'installation
+- vie quotidienne sans IA
+- explications abstraites
+
+## Gardés
+
+- actualité × test × cadre
+- vrai problème × workflow × résultat
+"""}),
+    ("img", "img/rooted-crop.jpg", {"en": "Rooted showing the oracle-bone form of 马 (horse)", "zh": "Rooted 展示「马」的甲骨文字形", "fr": "Rooted montre la forme oraculaire de 马 (cheval)"}),
+    ("code", "agent.py", """if response.stop_reason == "end_turn":
+    return text_of(response)
+
+tool_results = []
+for block in response.content:
+    if block.type != "tool_use":
+        continue
+    tool_results.append({
+        "type": "tool_result",
+        "tool_use_id": block.id,
+        "content": run_tool(block),
+    })
+messages.append({"role": "user", "content": tool_results})
+"""),
+    ("img", "deloitte-chart.png", {"en": "Demand forecasts from six models against actual demand", "zh": "六个模型的用电需求预测与实际值对比", "fr": "Prévisions de six modèles comparées à la demande réelle"}),
+    ("img", "robotics-preview.jpg", {"en": "Research poster on robotics exposure in European labour markets", "zh": "欧洲劳动力市场机器人暴露研究海报", "fr": "Poster de recherche sur l’exposition aux robots en Europe"}),
+]
+
 CSS = """
-:root{--bg:#faf8f4;--ink:#1f1d1a;--muted:#6b655c;--rule:#e4ded3;--accent:#a2482b}
-@media (prefers-color-scheme:dark){:root{--bg:#161513;--ink:#ebe6de;--muted:#9d968b;--rule:#2d2a26;--accent:#e38a66}}
+:root{--bg:#fbfbfa;--ink:#141414;--muted:#6f6f6a;--rule:#e8e7e3;--panel:#f2f2ef;--accent:#3346c9;--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06)}
+@media (prefers-color-scheme:dark){:root{--bg:#111112;--ink:#ededea;--muted:#9b9b96;--rule:#262627;--panel:#1b1b1d;--accent:#9aa8ff;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35)}}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.65 "Source Serif 4",Georgia,"Songti SC",serif;font-optical-sizing:auto}
-html[lang="zh-CN"] body{font-family:"Source Serif 4","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:17px;line-height:1.85}
-.wrap{max-width:660px;margin:0 auto;padding:40px 20px 72px}
-header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:72px;font:14px/1.4 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
-header .name{font-weight:600;letter-spacing:.01em;color:var(--ink);text-decoration:none}
-nav{display:flex;gap:18px;flex-wrap:wrap}
-nav a{color:var(--muted);text-decoration:none}
-nav a:hover,nav a[aria-current]{color:var(--ink)}
-.langs{display:flex;gap:10px;color:var(--muted)}
-.langs a{color:var(--muted);text-decoration:none}
-.langs a[aria-current]{color:var(--ink);font-weight:600}
-h1{font-size:34px;line-height:1.2;font-weight:600;letter-spacing:-.01em;margin:0 0 28px}
-h2{font:600 12px/1.4 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:80px 0 24px}
-html[lang="zh-CN"] h2{letter-spacing:.2em;font-size:13px}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.7 Inter,-apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB",sans-serif;-webkit-font-smoothing:antialiased}
+html[lang="zh-CN"] body{font-size:16px;line-height:1.9}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 24px 80px}
+.col{max-width:640px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:14px}
+header .name{font-weight:600;text-decoration:none;color:var(--ink)}
+nav,.langs{display:flex;gap:20px}
+nav a,.langs a{color:var(--muted);text-decoration:none;transition:color .15s}
+nav a:hover,.langs a:hover,.langs a[aria-current]{color:var(--ink)}
+.langs a[aria-current]{font-weight:600}
+.hero{padding:120px 0 72px}
+.hero h1{font:400 clamp(44px,7vw,76px)/1.04 "Instrument Serif",Georgia,serif;letter-spacing:-.015em;margin:0}
+html[lang="zh-CN"] .hero h1{font-family:"Instrument Serif","Songti SC","STSong",serif;letter-spacing:0}
+.greet{font-style:italic;color:var(--accent);display:inline-block;transition:opacity .35s ease,transform .35s ease}
+.greet.out{opacity:0;transform:translateY(.12em)}
+.hero p{font-size:19px;color:var(--muted);margin:22px 0 0;max-width:560px}
+h2{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:96px 0 28px}
+html[lang="zh-CN"] h2{letter-spacing:.16em}
 p{margin:0 0 18px}
-a{color:inherit;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
-a:hover{color:var(--accent)}
-.now-date{color:var(--muted);font-size:15px}
-.project{padding:22px 0;border-top:1px solid var(--rule)}
-.project:last-child{border-bottom:1px solid var(--rule)}
-.project h3{font-size:19px;font-weight:600;margin:0;display:inline}
-.project .year{color:var(--muted);font-size:15px;margin-left:8px}
-.project p{margin:8px 0 0}
-.project .links{margin-top:8px;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif;display:flex;gap:16px;flex-wrap:wrap}
+a{color:inherit;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 55%,transparent);text-decoration-thickness:1px;text-underline-offset:3px;transition:color .15s,text-decoration-color .15s}
+a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+.now{border-left:2px solid var(--accent);padding-left:18px}
+.now-date{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 40px;margin-top:8px}
+.project{min-width:0}
+.project figure{margin:0 0 18px;aspect-ratio:16/10;border-radius:14px;background:var(--panel);border:1px solid var(--rule);overflow:hidden;position:relative;transition:transform .25s ease,box-shadow .25s ease}
+.project:hover figure{transform:translateY(-3px);box-shadow:var(--shadow)}
+.project figure img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.project figure pre .h{color:var(--accent)}
+.project figure pre .k{color:var(--accent)}
+.project figure pre .s{color:#2f7d5b}
+.project figure pre .m{color:var(--muted)}
+@media (prefers-color-scheme:dark){.project figure pre .s{color:#7fd1a8}}
+.project figure .file{position:absolute;top:12px;left:16px;font:500 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+.project figure pre{margin:0;padding:40px 18px 16px;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink);white-space:pre;overflow:hidden;height:100%}
+.project h3{font:400 26px/1.15 "Instrument Serif",Georgia,"Songti SC",serif;margin:0;display:inline}
+.project .year{color:var(--muted);font-size:14px;margin-left:8px}
+.project p{margin:8px 0 0;color:var(--ink)}
+.project .links{margin-top:10px;font-size:14px;display:flex;gap:18px;flex-wrap:wrap}
 .lede{color:var(--muted)}
-dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:10px 20px}
-dt{color:var(--muted);font-size:15px;padding-top:2px;font-variant-numeric:tabular-nums}
+dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:12px 24px}
+dt{color:var(--muted);font-size:14px;padding-top:2px;font-variant-numeric:tabular-nums}
 dd{margin:0}
-.note{margin-top:24px}
-footer{margin-top:80px;color:var(--muted);font:13px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
-@media (max-width:560px){body{font-size:17px}h1{font-size:28px}header{margin-bottom:48px}dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:12px}h2{margin-top:64px}}
+.note{margin-top:28px}
+footer{margin-top:96px;padding-top:20px;border-top:1px solid var(--rule);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr);gap:48px}.hero{padding:72px 0 48px}h2{margin-top:72px}dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:12px}nav{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 """
+
+JS = """<script>
+(function(){
+  var el=document.querySelector('.greet'); if(!el) return;
+  var words=JSON.parse(el.getAttribute('data-words')), i=0;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setInterval(function(){
+    el.classList.add('out');
+    setTimeout(function(){ i=(i+1)%words.length; el.textContent=words[i]; el.classList.remove('out'); },350);
+  },2600);
+})();
+</script>"""
 
 LANGS = [("en", "EN", "index.html"), ("zh", "中文", "zh.html"), ("fr", "FR", "fr.html")]
 
@@ -200,21 +314,45 @@ def e(s):
     return html.escape(s, quote=False)
 
 
+def figure(i, key):
+    kind, a, b = FIGS[i]
+    if kind == "img":
+        alt = b[key] if isinstance(b, dict) else b
+        return '<figure><img src="%s" alt="%s" loading="lazy"></figure>' % (a, html.escape(alt))
+    text = b[key] if isinstance(b, dict) else b
+    out = []
+    for line in e(text.rstrip()).split("\n"):
+        if line.startswith("## "):
+            line = '<span class="h">%s</span>' % line
+        elif a.endswith(".py"):
+            parts = re.split(r'("[^"]*")', line)  # strings first, so keyword colouring never touches markup
+            line = "".join('<span class="s">%s</span>' % s if s.startswith('"') else
+                           re.sub(r"\b(if|for|in|return|continue|not)\b", r'<span class="k">\1</span>', s) for s in parts)
+        else:
+            line = re.sub(r"^([│├└─ ]+)", r'<span class="m">\1</span>', line)
+        out.append(line)
+    return '<figure><span class="file">%s</span><pre>%s</pre></figure>' % (e(a), "\n".join(out))
+
+
 def page(key):
     c = PAGES[key]
     alt = "\n".join('<link rel="alternate" hreflang="%s" href="https://siyaozhang.com%s">' % (PAGES[k]["lang"], PAGES[k]["path"]) for k in PAGES)
     langs = " ".join('<a href="%s"%s>%s</a>' % (f, ' aria-current="page"' if k == key else "", lbl) for k, lbl, f in LANGS)
-    intro = "\n".join("<p>%s</p>" % e(x) for x in c["intro"])
+    intro = "\n".join("<p>%s</p>" % e(x) for x in c["intro"][1:])  # the first line is already the hero subtitle
     projs = []
-    for name, year, links, text in c["projects"]:
+    for i, (name, year, links, text) in enumerate(c["projects"]):
         ls = "".join('<a href="%s"%s>%s</a>' % (u, "" if u.endswith(".pdf") else ' rel="noopener"', e(c["links"][k])) for k, u in links)
-        projs.append('<article class="project"><h3>%s</h3><span class="year">%s</span><p>%s</p>%s</article>'
-                     % (e(name), year, e(text), '<div class="links">%s</div>' % ls if ls else ""))
+        projs.append('<article class="project">%s<h3>%s</h3><span class="year">%s</span><p>%s</p>%s</article>'
+                     % (figure(i, key), e(name), year, e(text), '<div class="links">%s</div>' % ls if ls else ""))
     tl = "\n".join("<dt>%s</dt><dd>%s</dd>" % (e(a), e(b)) for a, b in c["timeline"])
     contact = e(c["contact"]).format(
         email='<a href="mailto:%s">%s</a>' % (EMAIL, EMAIL),
         linkedin='<a href="%s" rel="noopener">LinkedIn</a>' % LINKEDIN,
         github='<a href="%s" rel="noopener">GitHub</a>' % GITHUB)
+    words = GREETINGS[key]
+    h1, sub = HERO[key]
+    greet = '<span class="greet" data-words=\'%s\'>%s</span>' % (html.escape(__import__("json").dumps(words, ensure_ascii=False)), e(words[0]))
+    h1 = e(h1).replace("{g}", greet)
     return f"""<!doctype html>
 <html lang="{c['lang']}">
 <head>
@@ -231,7 +369,7 @@ def page(key):
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -242,13 +380,21 @@ def page(key):
 <div class="langs">{langs}</div>
 </header>
 <main>
-<h1>{e(c['hello'])}</h1>
+<section class="hero">
+<h1>{h1}</h1>
+<p>{e(sub)}</p>
+</section>
+<div class="col">
 {intro}
 <h2 id="now">{e(c['now_h'])}</h2>
-<p>{e(c['now'])} <span class="now-date">({e(c['now_date'])})</span></p>
+<p class="now">{e(c['now'])} <span class="now-date">({e(c['now_date'])})</span></p>
+</div>
 <h2 id="work">{e(c['work_h'])}</h2>
-<p class="lede">{e(c['work_intro'])}</p>
+<p class="lede col">{e(c['work_intro'])}</p>
+<div class="grid">
 {chr(10).join(projs)}
+</div>
+<div class="col">
 <h2 id="background">{e(c['bg_h'])}</h2>
 <dl>
 {tl}
@@ -256,9 +402,11 @@ def page(key):
 <p class="note">{e(c['bg_note'])}</p>
 <h2 id="contact">{e(c['contact_h'])}</h2>
 <p>{contact}</p>
-</main>
-<footer>{UPDATED[key]}</footer>
 </div>
+</main>
+<footer><span>{e(c['brand'])}</span><span>{UPDATED[key]}</span></footer>
+</div>
+{JS}
 </body>
 </html>
 """
