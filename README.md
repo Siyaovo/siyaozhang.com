@@ -4,3 +4,11 @@ Personal portfolio and writing of **Siyao Zhang** — product-minded builder wor
 
 Live at **[siyaozhang.com](https://siyaozhang.com)**.
 
+
+## Versions
+
+Every published version has a git tag, so any of them can be restored with `git checkout <tag> -- .`
+
+- `before-2026-11`: original design, before the November 2026 updates
+- `v2026-11-08-redesign` and `v2026-11-08-v2`: two redesigns that were tried and rolled back
+- `v2026-11-08-facts`: original design, with facts aligned to the CV and LinkedIn
