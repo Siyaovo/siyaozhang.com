@@ -15,22 +15,22 @@
 <style>
 /* ========== VARIABLES ========== */
 :root {
-  --cream: #FAF6F1;
-  --cream-dark: #F0EAE0;
-  --warm-white: #FFFDF9;
-  --text-primary: #2C2825;
-  --text-secondary: #6B6360;
-  --text-light: #9B9592;
-  --accent-terracotta: #C4735B;
-  --accent-terracotta-light: #D4917D;
-  --accent-sage: #8FA88A;
-  --accent-sage-light: #B5CBB0;
-  --accent-gold: #C9A96E;
-  --accent-gold-light: #DFC99E;
-  --border: #E5DDD5;
-  --shadow-sm: 0 1px 3px rgba(44,40,37,0.04);
-  --shadow-md: 0 4px 16px rgba(44,40,37,0.06);
-  --shadow-lg: 0 8px 32px rgba(44,40,37,0.08);
+  --cream: #FAFAFA;
+  --cream-dark: #EFEFEF;
+  --warm-white: #FFFFFF;
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-light: #8A8A8A;
+  --accent-terracotta: #111111;
+  --accent-terracotta-light: #6E6E6E;
+  --accent-sage: #444444;
+  --accent-sage-light: #BDBDBD;
+  --accent-gold: #333333;
+  --accent-gold-light: #C8C8C8;
+  --border: #E4E4E4;
+  --shadow-sm: 0 1px 3px rgba(41, 41, 41, 0.04);
+  --shadow-md: 0 4px 16px rgba(41, 41, 41, 0.06);
+  --shadow-lg: 0 8px 32px rgba(41, 41, 41, 0.08);
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
@@ -90,7 +90,7 @@ nav {
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(250,246,241,0.85);
+  background: rgba(246, 246, 246, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid transparent;
@@ -179,7 +179,7 @@ nav .nav-links a:hover::after { width: 100%; }
   right: -10%;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(196,115,91,0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.07) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -191,7 +191,7 @@ nav .nav-links a:hover::after { width: 100%; }
   left: -5%;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(143,168,138,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(161, 161, 161, 0.06) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -275,7 +275,7 @@ nav .nav-links a:hover::after { width: 100%; }
   gap: 0.6rem;
   flex-wrap: wrap;
   padding: 0.7rem 1.1rem;
-  background: rgba(196,115,91,0.06);
+  background: rgba(0, 0, 0, 0.06);
   border: 1px solid var(--accent-terracotta-light);
   border-radius: 100px;
   opacity: 0;
@@ -311,9 +311,9 @@ nav .nav-links a:hover::after { width: 100%; }
 }
 
 @keyframes pulse-dot {
-  0% { box-shadow: 0 0 0 0 rgba(196,115,91,0.5); }
-  70% { box-shadow: 0 0 0 8px rgba(196,115,91,0); }
-  100% { box-shadow: 0 0 0 0 rgba(196,115,91,0); }
+  0% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(0, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
 }
 
 .scroll-indicator {
@@ -461,30 +461,30 @@ nav .nav-links a:hover::after { width: 100%; }
 }
 
 /* ========== PROJECT THUMBNAIL SYSTEM ========== */
-.proj-thumb { background: linear-gradient(135deg, #FFF8F3 0%, #F0E5D8 100%); border-radius: var(--radius-md); padding: 1.6rem 1.4rem; min-height: 260px; border: 1px solid var(--border); transition: transform 0.35s ease, box-shadow 0.35s ease; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; overflow: hidden; }
-.proj-thumb-pipeline { background: #FFFDF9; padding: 1.2rem 1.2rem 1rem; }
+.proj-thumb { background: linear-gradient(135deg, #F9F9F9 0%, #E6E6E6 100%); border-radius: var(--radius-md); padding: 1.6rem 1.4rem; min-height: 260px; border: 1px solid var(--border); transition: transform 0.35s ease, box-shadow 0.35s ease; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; overflow: hidden; }
+.proj-thumb-pipeline { background: #FFFFFF; padding: 1.2rem 1.2rem 1rem; }
 .flow-box { display: flex; flex-direction: column; gap: 0.3rem; font-family: var(--font-sans); }
 .flow-row { display: flex; align-items: center; gap: 0.6rem; }
 .flow-node { flex: 1; padding: 0.45rem 0.7rem; font-size: 0.74rem; border-radius: 4px; }
 .flow-node code { font-family: 'SF Mono', monospace; font-size: 0.7rem; color: var(--text-primary); }
 .flow-node strong { color: var(--text-primary); }
-.flow-meta { color: #8a7f72; font-size: 0.68rem; }
-.flow-trigger { background: rgba(122,139,154,0.08); border-left: 3px solid #7A8B9A; border-radius: 0 4px 4px 0; }
-.flow-gate { background: rgba(122,139,154,0.08); border: 1px solid rgba(122,139,154,0.18); }
-.flow-llm { background: rgba(196,115,91,0.06); border: 1px solid rgba(196,115,91,0.2); }
-.flow-arrow { padding-left: 0.7rem; color: #8a7f72; font-size: 0.65rem; line-height: 1; }
-.flow-label-slate { color: #7A8B9A; }
-.flow-split-labels { display: flex; gap: 0.4rem; padding-left: 0.7rem; font-size: 0.65rem; color: #8a7f72; line-height: 1; }
+.flow-meta { color: #808080; font-size: 0.68rem; }
+.flow-trigger { background: rgba(136, 136, 136, 0.08); border-left: 3px solid #888888; border-radius: 0 4px 4px 0; }
+.flow-gate { background: rgba(136, 136, 136, 0.08); border: 1px solid rgba(136, 136, 136, 0.18); }
+.flow-llm { background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.2); }
+.flow-arrow { padding-left: 0.7rem; color: #808080; font-size: 0.65rem; line-height: 1; }
+.flow-label-slate { color: #888888; }
+.flow-split-labels { display: flex; gap: 0.4rem; padding-left: 0.7rem; font-size: 0.65rem; color: #808080; line-height: 1; }
 .flow-split-labels > span { flex: 1; }
 .flow-split { display: flex; gap: 0.4rem; }
 .flow-split > div { flex: 1; padding: 0.4rem 0.5rem; border-radius: 4px; font-size: 0.68rem; text-align: center; }
-.flow-split-ok { background: rgba(143,168,138,0.1); border: 1px solid rgba(143,168,138,0.25); color: var(--text-primary); }
-.flow-split-skip { background: rgba(155,149,146,0.08); border: 1px dashed rgba(155,149,146,0.35); color: #9B9592; }
-.flow-split-heal { background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.3); color: var(--text-primary); }
+.flow-split-ok { background: rgba(161, 161, 161, 0.1); border: 1px solid rgba(161, 161, 161, 0.25); color: var(--text-primary); }
+.flow-split-skip { background: rgba(150, 150, 150, 0.08); border: 1px dashed rgba(150, 150, 150, 0.35); color: #8A8A8A; }
+.flow-split-heal { background: rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.3); color: var(--text-primary); }
 .pipe-svg { width: 100%; height: auto; max-height: 230px; display: block; }
-.proj-thumb-cta { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid rgba(0,0,0,0.06); display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; }
-.proj-thumb-caption { font-size: 0.66rem; color: #8a7f72; letter-spacing: 0.06em; flex: 1; }
-.proj-thumb-link { font-size: 0.76rem; font-weight: 600; color: #B1A699; transition: color 0.25s; white-space: nowrap; }
+.proj-thumb-cta { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid rgba(0, 0, 0, 0.06); display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; }
+.proj-thumb-caption { font-size: 0.66rem; color: #808080; letter-spacing: 0.06em; flex: 1; }
+.proj-thumb-link { font-size: 0.76rem; font-weight: 600; color: #A7A7A7; transition: color 0.25s; white-space: nowrap; }
 @media (max-width: 640px) {
   .proj-thumb { padding: 1.1rem 1rem; min-height: auto; }
   .proj-thumb-pipeline { padding: 0.9rem 0.9rem 0.8rem; }
@@ -625,7 +625,7 @@ nav .nav-links a:hover::after { width: 100%; }
 .project-finding {
   font-size: 0.85rem;
   color: var(--text-secondary);
-  background: rgba(196,115,91,0.06);
+  background: rgba(0, 0, 0, 0.06);
   border-left: 2px solid var(--accent-terracotta-light);
   padding: 0.6rem 0.9rem;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -707,7 +707,7 @@ nav .nav-links a:hover::after { width: 100%; }
   position: absolute;
   bottom: 0.75rem;
   right: 0.75rem;
-  background: rgba(44,40,37,0.75);
+  background: rgba(41, 41, 41, 0.75);
   backdrop-filter: blur(8px);
   color: var(--cream);
   font-size: 0.72rem;
@@ -764,7 +764,7 @@ nav .nav-links a:hover::after { width: 100%; }
   position: absolute;
   bottom: 0.75rem;
   right: 0.75rem;
-  background: rgba(44,40,37,0.75);
+  background: rgba(41, 41, 41, 0.75);
   backdrop-filter: blur(8px);
   color: var(--cream);
   font-size: 0.72rem;
@@ -919,7 +919,7 @@ nav .nav-links a:hover::after { width: 100%; }
 
 .timeline-highlight {
   display: inline-block;
-  background: rgba(196,115,91,0.08);
+  background: rgba(0, 0, 0, 0.08);
   color: var(--accent-terracotta);
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
@@ -983,17 +983,17 @@ nav .nav-links a:hover::after { width: 100%; }
 .contact-btn.primary:hover {
   background: var(--accent-terracotta-light);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(196,115,91,0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .contact-btn.secondary {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--cream);
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .contact-btn.secondary:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   color: var(--warm-white);
   transform: translateY(-2px);
 }
@@ -1006,14 +1006,14 @@ nav .nav-links a:hover::after { width: 100%; }
 /* ========== FOOTER ========== */
 footer {
   background: var(--text-primary);
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding: 1.5rem 0;
   text-align: center;
 }
 
 footer p {
   font-size: 0.8rem;
-  color: rgba(250,246,241,0.3);
+  color: rgba(246, 246, 246, 0.3);
 }
 
 /* ========== ANIMATIONS ========== */
@@ -1063,7 +1063,7 @@ footer p {
     top: 64px;
     left: 0;
     right: 0;
-    background: rgba(250,246,241,0.97);
+    background: rgba(246, 246, 246, 0.97);
     backdrop-filter: blur(20px);
     padding: 1.5rem 2rem;
     gap: 1.25rem;
@@ -1097,6 +1097,7 @@ footer p {
 .lang-switch { display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; }
 .lang-switch a { color: var(--text-light); font-weight: 500; }
 .lang-switch a.active-lang { color: var(--accent-terracotta); font-weight: 600; }
+.contact-btn.primary{background:#FFFFFF;color:#111111}.contact-btn.primary:hover{background:#E4E4E4;color:#111111}
 </style>
 </head>
 <body>
@@ -1204,7 +1205,7 @@ footer p {
 
     <div class="project-grid">
       <!-- Task Router Agent -->
-      <div class="project-card reveal" style="--card-accent: #7A8B9A;">
+      <div class="project-card reveal" style="--card-accent: #888888;">
         <a href="ai-automation-zh.html" class="project-visual" style="display: block; text-decoration: none;">
           <div class="proj-thumb proj-thumb-router">
             <div class="flow-box">
@@ -1264,42 +1265,42 @@ footer p {
           <div class="proj-thumb proj-thumb-pipeline">
             <svg class="pipe-svg" viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="a-t-zh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C4735B"/></marker>
-                <marker id="a-g-zh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#C9A96E"/></marker>
-                <marker id="a-s-zh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8FA88A"/></marker>
+                <marker id="a-t-zh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111111"/></marker>
+                <marker id="a-g-zh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker>
+                <marker id="a-s-zh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#444444"/></marker>
               </defs>
-              <g font-family="'Source Sans 3', sans-serif" font-size="10" text-anchor="middle" fill="#2C2825">
+              <g font-family="'Source Sans 3', sans-serif" font-size="10" text-anchor="middle" fill="#111111">
                 <g transform="translate(0 28)">
-                  <rect x="10"  y="0" width="54" height="24" rx="4" fill="#FFFDF9" stroke="#C4735B" stroke-width="1"/>
+                  <rect x="10"  y="0" width="54" height="24" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
                   <text x="37"  y="15" font-weight="600">选题</text>
-                  <rect x="70"  y="0" width="54" height="24" rx="4" fill="#FFFDF9" stroke="#C4735B" stroke-width="1"/>
+                  <rect x="70"  y="0" width="54" height="24" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
                   <text x="97"  y="15" font-weight="600">脚本</text>
-                  <rect x="130" y="0" width="54" height="24" rx="4" fill="#FFFDF9" stroke="#C4735B" stroke-width="1"/>
+                  <rect x="130" y="0" width="54" height="24" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
                   <text x="157" y="15" font-weight="600">开头</text>
-                  <rect x="190" y="0" width="54" height="24" rx="4" fill="#FFFDF9" stroke="#C4735B" stroke-width="1"/>
+                  <rect x="190" y="0" width="54" height="24" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
                   <text x="217" y="15" font-weight="600">标题</text>
-                  <rect x="250" y="0" width="54" height="24" rx="4" fill="#FFFDF9" stroke="#C4735B" stroke-width="1"/>
+                  <rect x="250" y="0" width="54" height="24" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
                   <text x="277" y="15" font-weight="600">质检</text>
-                  <rect x="310" y="0" width="60" height="24" rx="4" fill="#FFFDF9" stroke="#C9A96E" stroke-width="1.5"/>
+                  <rect x="310" y="0" width="60" height="24" rx="4" fill="#FFFFFF" stroke="#333333" stroke-width="1.5"/>
                   <text x="340" y="15" font-weight="600">数据复盘</text>
                 </g>
-                <g stroke="#C4735B" stroke-width="1.2" fill="none" marker-end="url(#a-t-zh)">
+                <g stroke="#111111" stroke-width="1.2" fill="none" marker-end="url(#a-t-zh)">
                   <line x1="64"  y1="40" x2="68"  y2="40"/>
                   <line x1="124" y1="40" x2="128" y2="40"/>
                   <line x1="184" y1="40" x2="188" y2="40"/>
                   <line x1="244" y1="40" x2="248" y2="40"/>
                   <line x1="304" y1="40" x2="308" y2="40"/>
                 </g>
-                <rect x="130" y="140" width="120" height="30" rx="5" fill="#FAF6F1" stroke="#C9A96E" stroke-width="1.5"/>
+                <rect x="130" y="140" width="120" height="30" rx="5" fill="#FAFAFA" stroke="#333333" stroke-width="1.5"/>
                 <text x="190" y="156" font-weight="600" font-size="11">methodology.md</text>
-                <text x="190" y="167" font-size="8" fill="#8a7f72">共享状态</text>
-                <path d="M 340 52 Q 340 110 250 155" stroke="#C9A96E" stroke-width="1.4" fill="none" marker-end="url(#a-g-zh)"/>
-                <text x="297" y="95" font-size="9" fill="#C9A96E" font-style="italic" text-anchor="start">写回规则</text>
-                <path d="M 130 155 Q 30 110 37 52" stroke="#8FA88A" stroke-width="1.4" fill="none" marker-end="url(#a-s-zh)" stroke-dasharray="4,3"/>
-                <text x="17" y="95" font-size="9" fill="#6a8466" font-style="italic" text-anchor="start">读取标准</text>
-                <text x="190" y="210" font-size="11" font-weight="600" fill="#2C2825">反馈闭环</text>
-                <text x="190" y="225" font-size="9" fill="#6B6360">每个发布周期过滤器越来越严</text>
-                <text x="190" y="240" font-size="9" fill="#6B6360">—— 不需要改 prompt</text>
+                <text x="190" y="167" font-size="8" fill="#808080">共享状态</text>
+                <path d="M 340 52 Q 340 110 250 155" stroke="#333333" stroke-width="1.4" fill="none" marker-end="url(#a-g-zh)"/>
+                <text x="297" y="95" font-size="9" fill="#333333" font-style="italic" text-anchor="start">写回规则</text>
+                <path d="M 130 155 Q 30 110 37 52" stroke="#444444" stroke-width="1.4" fill="none" marker-end="url(#a-s-zh)" stroke-dasharray="4,3"/>
+                <text x="17" y="95" font-size="9" fill="#7C7C7C" font-style="italic" text-anchor="start">读取标准</text>
+                <text x="190" y="210" font-size="11" font-weight="600" fill="#111111">反馈闭环</text>
+                <text x="190" y="225" font-size="9" fill="#555555">每个发布周期过滤器越来越严</text>
+                <text x="190" y="240" font-size="9" fill="#555555">—— 不需要改 prompt</text>
               </g>
             </svg>
             <div class="proj-thumb-cta">
@@ -1335,45 +1336,45 @@ footer p {
       <!-- Rooted -->
       <div class="project-card reveal" style="--card-accent: var(--accent-sage);">
         <a href="https://rooted-azure.vercel.app" target="_blank" rel="noopener" class="project-visual" style="display: block; text-decoration: none;">
-          <div style="background: linear-gradient(135deg, #F4F1EA 0%, #EAE3D3 100%); border-radius: var(--radius-md); padding: 2.2rem 1.8rem; position: relative; overflow: hidden; transition: transform 0.35s ease, box-shadow 0.35s ease; cursor: pointer; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; min-height: 260px;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(44,40,37,0.12)';this.querySelector('.vd').style.color='#8FA88A'" onmouseout="this.style.transform='';this.style.boxShadow='';this.querySelector('.vd').style.color=''">
+          <div style="background: linear-gradient(135deg, #F1F1F1 0%, #E3E3E3 100%); border-radius: var(--radius-md); padding: 2.2rem 1.8rem; position: relative; overflow: hidden; transition: transform 0.35s ease, box-shadow 0.35s ease; cursor: pointer; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; min-height: 260px;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(41, 41, 41, 0.12)';this.querySelector('.vd').style.color='#444444'" onmouseout="this.style.transform='';this.style.boxShadow='';this.querySelector('.vd').style.color=''">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 1.4rem; flex: 1; justify-content: center;">
               <div style="display: flex; flex-direction: column; align-items: center; gap: 0.9rem;">
-                <div style="font-family: 'Songti SC', 'STSong', 'Noto Serif SC', serif; font-size: 3.4rem; color: #1f1a14; line-height: 1; position: relative;">
+                <div style="font-family: 'Songti SC', 'STSong', 'Noto Serif SC', serif; font-size: 3.4rem; color: #1B1B1B; line-height: 1; position: relative;">
                   <span style="position: relative; z-index: 1;">马</span>
-                  <div style="position: absolute; inset: -16px; border-radius: 50%; background: radial-gradient(circle, rgba(45,90,135,0.18), transparent 70%); z-index: 0; pointer-events: none;"></div>
+                  <div style="position: absolute; inset: -16px; border-radius: 50%; background: radial-gradient(circle, rgba(0, 0, 0, 0.18), transparent 70%); z-index: 0; pointer-events: none;"></div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.7rem;">
                   <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-                    <div style="width: 7px; height: 7px; border-radius: 50%; background: #a2633a;"></div>
-                    <span style="font-size: 0.55rem; color: #8a7f72; letter-spacing: 0.1em;">甲骨文</span>
+                    <div style="width: 7px; height: 7px; border-radius: 50%; background: #282828;"></div>
+                    <span style="font-size: 0.55rem; color: #808080; letter-spacing: 0.1em;">甲骨文</span>
                   </div>
-                  <div style="width: 22px; height: 1px; background: #d9cfbf;"></div>
+                  <div style="width: 22px; height: 1px; background: #D0D0D0;"></div>
                   <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-                    <div style="width: 5px; height: 5px; border-radius: 50%; background: #8a7f72;"></div>
-                    <span style="font-size: 0.55rem; color: #8a7f72; letter-spacing: 0.1em;">小篆</span>
+                    <div style="width: 5px; height: 5px; border-radius: 50%; background: #808080;"></div>
+                    <span style="font-size: 0.55rem; color: #808080; letter-spacing: 0.1em;">小篆</span>
                   </div>
-                  <div style="width: 22px; height: 1px; background: #d9cfbf;"></div>
+                  <div style="width: 22px; height: 1px; background: #D0D0D0;"></div>
                   <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-                    <div style="width: 5px; height: 5px; border-radius: 50%; background: #8a7f72;"></div>
-                    <span style="font-size: 0.55rem; color: #8a7f72; letter-spacing: 0.1em;">现代</span>
+                    <div style="width: 5px; height: 5px; border-radius: 50%; background: #808080;"></div>
+                    <span style="font-size: 0.55rem; color: #808080; letter-spacing: 0.1em;">现代</span>
                   </div>
                 </div>
               </div>
-              <div style="width: 60%; height: 1px; background: linear-gradient(to right, transparent, rgba(0,0,0,0.08), transparent);"></div>
-              <div style="display: flex; align-items: center; gap: 0.8rem; font-family: 'Songti SC', 'STSong', 'Noto Serif SC', serif; color: #1f1a14; line-height: 1;">
+              <div style="width: 60%; height: 1px; background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.08), transparent);"></div>
+              <div style="display: flex; align-items: center; gap: 0.8rem; font-family: 'Songti SC', 'STSong', 'Noto Serif SC', serif; color: #1B1B1B; line-height: 1;">
                 <div style="font-size: 2.5rem; position: relative;">
                   <span style="position: relative; z-index: 1;">妈</span>
-                  <div style="position: absolute; inset: -12px; border-radius: 50%; background: radial-gradient(circle, rgba(200,74,74,0.14), transparent 70%); z-index: 0; pointer-events: none;"></div>
+                  <div style="position: absolute; inset: -12px; border-radius: 50%; background: radial-gradient(circle, rgba(0, 0, 0, 0.14), transparent 70%); z-index: 0; pointer-events: none;"></div>
                 </div>
-                <span style="font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; color: #8a7f72; font-weight: 300;">=</span>
+                <span style="font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; color: #808080; font-weight: 300;">=</span>
                 <span style="font-size: 2rem;">女</span>
-                <span style="font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; color: #8a7f72; font-weight: 300;">+</span>
+                <span style="font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; color: #808080; font-weight: 300;">+</span>
                 <span style="font-size: 2rem;">马</span>
               </div>
             </div>
-            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.06);">
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(0, 0, 0, 0.06);">
               <div style="display: flex; align-items: baseline; justify-content: space-between;">
-                <span style="font-size: 0.72rem; color: #8a7f72; letter-spacing: 0.05em;">时间旅行 &middot; 字形组合 &middot; 2 个字</span>
+                <span style="font-size: 0.72rem; color: #808080; letter-spacing: 0.05em;">时间旅行 &middot; 字形组合 &middot; 2 个字</span>
                 <span class="vd" style="font-size: 0.78rem; font-weight: 600; color: var(--accent-sage); transition: color 0.25s;">体验 Demo &rarr;</span>
               </div>
             </div>
@@ -1408,7 +1409,7 @@ footer p {
       </div>
 
       <!-- Function Calling Demo -->
-      <div class="project-card reveal" style="--card-accent: #7A8B9A;">
+      <div class="project-card reveal" style="--card-accent: #888888;">
         <div>
           <div class="project-card-top">
             <span class="project-type">技术 Demo &middot; 开源</span>
@@ -1589,7 +1590,7 @@ footer p {
 
     <div class="skills-grid">
       <div class="skill-group reveal">
-        <div class="skill-icon" style="background: rgba(196,115,91,0.1); color: var(--accent-terracotta);">
+        <div class="skill-icon" style="background: rgba(0, 0, 0, 0.1); color: var(--accent-terracotta);">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
         </div>
         <h3>AI 系统设计</h3>
@@ -1604,7 +1605,7 @@ footer p {
       </div>
 
       <div class="skill-group reveal reveal-delay-1">
-        <div class="skill-icon" style="background: rgba(143,168,138,0.15); color: var(--accent-sage);">
+        <div class="skill-icon" style="background: rgba(161, 161, 161, 0.15); color: var(--accent-sage);">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
         </div>
         <h3>数据 & 工程</h3>
@@ -1620,7 +1621,7 @@ footer p {
       </div>
 
       <div class="skill-group reveal reveal-delay-2">
-        <div class="skill-icon" style="background: rgba(201,169,110,0.12); color: var(--accent-gold);">
+        <div class="skill-icon" style="background: rgba(0, 0, 0, 0.12); color: var(--accent-gold);">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
         </div>
         <h3>跨文化 / 出海</h3>

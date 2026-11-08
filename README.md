@@ -13,3 +13,4 @@ Every published version has a git tag, so any of them can be restored with `git 
 - `v2026-11-08-redesign` and `v2026-11-08-v2`: two redesigns that were tried and rolled back
 - `v2026-11-08-facts`: incomplete, missed the text changes; use the next tag
 - `v2026-11-08-facts-fixed`: original design, with facts aligned to the CV and LinkedIn
+- `v2026-11-08-mono`: same layout and text, black-and-white palette
