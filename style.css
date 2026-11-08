@@ -1,0 +1,35 @@
+:root{--bg:#faf8f4;--ink:#1f1d1a;--muted:#6b655c;--rule:#e4ded3;--accent:#a2482b}
+@media (prefers-color-scheme:dark){:root{--bg:#161513;--ink:#ebe6de;--muted:#9d968b;--rule:#2d2a26;--accent:#e38a66}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.65 "Source Serif 4",Georgia,"Songti SC",serif;font-optical-sizing:auto}
+html[lang="zh-CN"] body{font-family:"Source Serif 4","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:17px;line-height:1.85}
+.wrap{max-width:660px;margin:0 auto;padding:40px 20px 72px}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:72px;font:14px/1.4 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
+header .name{font-weight:600;letter-spacing:.01em;color:var(--ink);text-decoration:none}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover,nav a[aria-current]{color:var(--ink)}
+.langs{display:flex;gap:10px;color:var(--muted)}
+.langs a{color:var(--muted);text-decoration:none}
+.langs a[aria-current]{color:var(--ink);font-weight:600}
+h1{font-size:34px;line-height:1.2;font-weight:600;letter-spacing:-.01em;margin:0 0 28px}
+h2{font:600 12px/1.4 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:80px 0 24px}
+html[lang="zh-CN"] h2{letter-spacing:.2em;font-size:13px}
+p{margin:0 0 18px}
+a{color:inherit;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--accent)}
+.now-date{color:var(--muted);font-size:15px}
+.project{padding:22px 0;border-top:1px solid var(--rule)}
+.project:last-child{border-bottom:1px solid var(--rule)}
+.project h3{font-size:19px;font-weight:600;margin:0;display:inline}
+.project .year{color:var(--muted);font-size:15px;margin-left:8px}
+.project p{margin:8px 0 0}
+.project .links{margin-top:8px;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif;display:flex;gap:16px;flex-wrap:wrap}
+.lede{color:var(--muted)}
+dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:10px 20px}
+dt{color:var(--muted);font-size:15px;padding-top:2px;font-variant-numeric:tabular-nums}
+dd{margin:0}
+.note{margin-top:24px}
+footer{margin-top:80px;color:var(--muted);font:13px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue","PingFang SC",sans-serif}
+@media (max-width:560px){body{font-size:17px}h1{font-size:28px}header{margin-bottom:48px}dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:12px}h2{margin-top:64px}}
