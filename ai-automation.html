@@ -1,5 +1,453 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=index.html#work"><link rel="canonical" href="https://siyaozhang.com/index.html">
-<title>Moved</title></head>
-<body><p>This page has moved: <a href="index.html#work">index.html#work</a></p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Router Agent — Siyao Zhang</title>
+<meta name="description" content="A state-machine-driven agent orchestration runtime. Designed by Siyao Zhang — LLM-powered task routing on a Markdown control plane with self-healing, dead-letter queue, and human-in-the-loop validation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FAF6F1; --cream-dark: #F0EAE0; --warm-white: #FFFDF9;
+  --text-primary: #2C2825; --text-secondary: #6B6360; --text-light: #9B9592;
+  --accent-terracotta: #C4735B; --accent-terracotta-light: #D4917D;
+  --accent-sage: #8FA88A; --accent-sage-light: #B5CBB0;
+  --accent-gold: #C9A96E; --accent-gold-light: #DFC99E;
+  --accent-slate: #7A8B9A; --accent-slate-light: #A0AFBC;
+  --border: #E5DDD5;
+  --shadow-sm: 0 1px 3px rgba(44,40,37,0.04); --shadow-md: 0 4px 16px rgba(44,40,37,0.06);
+  --radius-sm: 8px; --radius-md: 14px;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'Source Sans 3', -apple-system, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Courier New', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-sans); color: var(--text-primary); background: var(--cream); line-height: 1.7; }
+a { color: var(--accent-slate); text-decoration: none; }
+a:hover { color: var(--text-primary); }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+.back-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(250,246,241,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 1rem 2rem; }
+.back-nav .inner { max-width: 860px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.back-nav a.back-link { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
+
+.hero { padding: 7rem 0 2rem; text-align: center; }
+.hero .label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-slate); margin-bottom: 1rem; }
+.hero h1 { font-family: var(--font-serif); font-size: 2.4rem; line-height: 1.2; margin-bottom: 1.2rem; }
+.hero .subtitle { font-size: 1rem; color: var(--text-secondary); max-width: 680px; margin: 0 auto; line-height: 1.8; }
+
+section { margin-bottom: 2.5rem; }
+.part-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-slate); margin-bottom: 0.5rem; }
+h2 { font-family: var(--font-serif); font-size: 1.7rem; margin-bottom: 1rem; }
+h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.6rem; margin-top: 1.5rem; }
+h4 { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-slate); margin-bottom: 0.5rem; margin-top: 2rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--border); }
+p, li { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 0.5rem; }
+strong { color: var(--text-primary); }
+ul { list-style: none; padding: 0; }
+li { padding-left: 1.2rem; position: relative; margin-bottom: 0.4rem; }
+li::before { content: ''; position: absolute; left: 0; top: 0.65rem; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-slate); }
+ol { padding-left: 1.5rem; }
+ol li { padding-left: 0.3rem; }
+ol li::before { display: none; }
+code { font-family: var(--font-mono); font-size: 0.85em; color: var(--accent-terracotta); background: rgba(196,115,91,0.06); padding: 0.1em 0.35em; border-radius: 3px; }
+
+.card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem; margin: 1.2rem 0; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+th { text-align: left; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-light); padding: 0.5rem 0.8rem; border-bottom: 2px solid var(--border); }
+td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+
+.takeaway { background: rgba(122,139,154,0.06); border-left: 3px solid var(--accent-slate); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+.takeaway p { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; margin: 0; }
+
+.arch-diagram { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.6rem 1.4rem; margin: 1.5rem 0; }
+.arch-row { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px dashed var(--border); }
+.arch-row:last-child { border-bottom: none; }
+.arch-layer { font-family: var(--font-serif); font-size: 1.05rem; color: var(--accent-slate); min-width: 48px; }
+.arch-name { font-weight: 600; color: var(--text-primary); font-size: 0.9rem; min-width: 160px; }
+.arch-impl { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); flex: 1; }
+.arch-role { font-size: 0.75rem; color: var(--text-light); min-width: 200px; text-align: right; }
+
+.flow-box { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem; margin: 1.2rem 0; font-size: 0.85rem; }
+.flow-step { display: flex; align-items: center; gap: 0.8rem; padding: 0.55rem 0.8rem; border-radius: 6px; margin-bottom: 0.35rem; }
+.flow-step.trigger { background: rgba(143,168,138,0.08); border-left: 3px solid var(--accent-sage); }
+.flow-step.gate { background: rgba(201,169,110,0.08); border-left: 3px solid var(--accent-gold); }
+.flow-step.llm { background: rgba(122,139,154,0.1); border-left: 3px solid var(--accent-slate); }
+.flow-step.exec { background: rgba(196,115,91,0.06); border-left: 3px solid var(--accent-terracotta); }
+.flow-arrow { color: var(--text-light); padding-left: 1.2rem; font-size: 0.7rem; line-height: 1; margin: 0.1rem 0; }
+.flow-split { display: flex; gap: 0.5rem; margin: 0.4rem 0; }
+.flow-split > div { flex: 1; padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.78rem; text-align: center; }
+.flow-split .ok { background: rgba(143,168,138,0.08); border: 1px solid rgba(143,168,138,0.25); }
+.flow-split .skip { background: rgba(155,149,146,0.08); border: 1px dashed rgba(155,149,146,0.3); color: var(--text-light); }
+.flow-split .heal { background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.3); }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+.metric-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.1rem; }
+.metric-value { font-family: var(--font-serif); font-size: 1.6rem; color: var(--accent-slate); line-height: 1.1; margin-bottom: 0.3rem; }
+.metric-label { font-size: 0.72rem; color: var(--text-light); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+.metric-note { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.4; }
+
+.decision-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.2rem 1.4rem; margin: 0.8rem 0; }
+.decision-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.6rem; }
+.decision-row { display: grid; grid-template-columns: 100px 1fr; gap: 0.5rem; margin-bottom: 0.4rem; font-size: 0.85rem; }
+.decision-row .k { color: var(--text-light); font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; padding-top: 0.1rem; }
+.decision-row .v { color: var(--text-secondary); }
+.decision-row .v strong { color: var(--text-primary); }
+
+@media (max-width: 640px) {
+  .container { padding: 0 1.25rem; }
+  .hero { padding: 6rem 0 1.5rem; }
+  .hero h1 { font-size: 1.7rem; }
+  .hero .subtitle { font-size: 0.92rem; }
+  h2 { font-size: 1.35rem; }
+  h3 { font-size: 0.9rem; }
+
+  /* Flow diagram — stop using flex so labels + codes wrap naturally */
+  .flow-box { padding: 1rem 0.9rem; font-size: 0.82rem; }
+  .flow-step { display: block; padding: 0.55rem 0.7rem; font-size: 0.82rem; line-height: 1.6; }
+  .flow-arrow { padding-left: 0.5rem; font-size: 0.65rem; word-break: break-word; }
+  .flow-split { flex-direction: column; gap: 0.4rem; }
+  .flow-split > div { font-size: 0.78rem; text-align: left; padding: 0.5rem 0.7rem; }
+
+  /* Architecture layer breakdown — stack each row */
+  .arch-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; padding: 0.6rem 0; }
+  .arch-layer { font-size: 0.95rem; min-width: auto; }
+  .arch-name { font-size: 0.9rem; min-width: auto; }
+  .arch-impl { font-size: 0.76rem; word-break: break-word; }
+  .arch-role { text-align: left; min-width: auto; }
+
+  /* Decision cards */
+  .decision-card { padding: 1rem 1.1rem; }
+  .decision-title { font-size: 0.95rem; }
+  .decision-row { grid-template-columns: 1fr; gap: 0.15rem; font-size: 0.82rem; }
+
+  /* Metrics grid — 2 columns on phone */
+  .metrics-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .metric-card { padding: 0.8rem 0.85rem; }
+  .metric-value { font-size: 1.3rem; }
+  .metric-label { font-size: 0.66rem; }
+  .metric-note { font-size: 0.7rem; }
+
+  /* Tables (Part 7 comparison) — let them scroll horizontally */
+  table { display: block; overflow-x: auto; white-space: nowrap; font-size: 0.78rem; }
+  table th, table td { padding: 0.45rem 0.55rem; white-space: normal; min-width: 120px; }
+
+  /* Takeaway pull-quotes */
+  .takeaway { padding: 0.85rem 1rem; }
+  .takeaway p { font-size: 0.86rem; }
+
+  /* Code inline fits */
+  code { word-break: break-word; }
+}
+</style>
+</head>
+<body>
+
+<div class="back-nav"><div class="inner"><a class="back-link" href="index.html">&larr; Back to portfolio</a><div style="display:flex;align-items:center;gap:0.25rem;background:var(--warm-white);border:1px solid var(--border);border-radius:6px;padding:0.2rem;"><a href="ai-automation.html" style="font-size:0.72rem;font-weight:600;padding:0.2rem 0.5rem;border-radius:4px;background:var(--accent-slate);color:var(--warm-white);">EN</a><a href="ai-automation-zh.html" style="font-size:0.72rem;font-weight:500;padding:0.2rem 0.5rem;border-radius:4px;color:var(--text-light);">中</a><a href="ai-automation-fr.html" style="font-size:0.72rem;font-weight:500;padding:0.2rem 0.5rem;border-radius:4px;color:var(--text-light);">FR</a></div></div></div>
+
+<div class="hero">
+  <div class="container">
+    <div class="label">Agent Orchestration · System Design</div>
+    <h1>Task Router Agent<br>A State-Machine Orchestration Layer on a Markdown File</h1>
+    <p class="subtitle">I designed an LLM-powered task orchestration runtime that routes, executes, and self-heals autonomously. A single Markdown file becomes the agent control plane. Session-independent runtime — edit the file, the work happens in the background regardless of whether any session is open. Below is how the architecture was designed, the trade-offs I made, the measurable results, and the emergent behavior I didn&rsquo;t program for.</p>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== PART 1 ===== -->
+<section>
+  <div class="part-label">Part 1</div>
+  <h2>The Problem</h2>
+  <p><strong>Context</strong>: Running four concurrent tracks (content production, a first client architecture-review brief, portfolio development, coursework) as a solo operator. Task state lived in scattered tools; re-entering context after every session break cost 15&ndash;30 minutes of warm-up before any real work.</p>
+  <p><strong>Product constraint</strong>: I wanted a task system where I could <strong>add work at any time</strong>, and tasks assigned to automation would <strong>process themselves</strong> without requiring me to be at the machine. Close the laptop, come back hours later, find work done.</p>
+  <p><strong>Why this matters for agent design</strong>: Most "AI assistants" stop when the chat window closes. They&rsquo;re attached to a session, not to the work. Building an agent runtime that&rsquo;s <em>independent of session lifecycle</em> is a fundamentally different design problem &mdash; and the core shift required for agents to act as infrastructure rather than as tools.</p>
+  <div class="takeaway">
+    <p>The design question: Can a single plain-text file, paired with a state-machine protocol and an LLM decision layer, serve as a persistent agent runtime? If yes, the same pattern generalizes to any operational workflow &mdash; support triage, content pipelines, ops automation.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== PART 2 ===== -->
+<section>
+  <div class="part-label">Part 2</div>
+  <h2>System Architecture</h2>
+
+  <h4>Task Routing Flow</h4>
+  <div class="flow-box">
+    <div class="flow-step trigger"><strong>Trigger</strong> &middot; <code>task-board.md</code> edited (any source: me, another agent, a cron)</div>
+    <div class="flow-arrow">↓&nbsp;&nbsp;<code>fswatch</code> · 2s debounce · <code>launchd</code> hourly fallback</div>
+    <div class="flow-step gate"><strong>Quiescence Gate</strong> &middot; 30-second idle required before processing (prevents mid-edit race conditions)</div>
+    <div class="flow-arrow">↓&nbsp;&nbsp;Acquire file lock · <code>mkdir</code> atomic primitive</div>
+    <div class="flow-step llm"><strong>LLM Decision Layer</strong> &middot; Parse task-board state machine · classify each task: <code>ready</code> / <code>blocked:*</code> / <code>running:*</code> / <code>done</code> / <code>failed:*</code></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-split">
+      <div class="ok"><strong>ready</strong> → parallel execution (up to 3 concurrent subagents)</div>
+      <div class="skip"><strong>blocked / done</strong> → skip without re-evaluation</div>
+      <div class="heal"><strong>running &gt; 30min</strong> → reset to ready (dead-lock recovery)</div>
+    </div>
+    <div class="flow-arrow">↓&nbsp;&nbsp;Single-writer protocol · main agent consolidates state updates</div>
+    <div class="flow-step exec"><strong>State Update + Append-Only Log</strong> &middot; <code>task-board.md</code> writeback · <code>events.jsonl</code> structured log · <code>deadletter/</code> for terminal failures</div>
+  </div>
+
+  <h4>Layer Breakdown</h4>
+  <div class="arch-diagram">
+    <div class="arch-row">
+      <span class="arch-layer">L5</span>
+      <span class="arch-name">Control Plane</span>
+      <span class="arch-impl">task-board.md</span>
+      <span class="arch-role">Markdown as UI &amp; source of truth</span>
+    </div>
+    <div class="arch-row">
+      <span class="arch-layer">L4</span>
+      <span class="arch-name">Scheduler</span>
+      <span class="arch-impl">fswatch + launchd</span>
+      <span class="arch-role">Event-driven + time-based fallback</span>
+    </div>
+    <div class="arch-row">
+      <span class="arch-layer">L3</span>
+      <span class="arch-name">Executor</span>
+      <span class="arch-impl">bash + claude -p</span>
+      <span class="arch-role">Stateless invocation · one-shot</span>
+    </div>
+    <div class="arch-row">
+      <span class="arch-layer">L2</span>
+      <span class="arch-name">Decision Layer</span>
+      <span class="arch-impl">task-check skill (LLM)</span>
+      <span class="arch-role">State-machine routing &amp; handoff</span>
+    </div>
+    <div class="arch-row">
+      <span class="arch-layer">L1</span>
+      <span class="arch-name">State &amp; Audit</span>
+      <span class="arch-impl">events.jsonl + deadletter/</span>
+      <span class="arch-role">Append-only log &amp; failure capture</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== PART 3 ===== -->
+<section>
+  <div class="part-label">Part 3</div>
+  <h2>Key Design Decisions</h2>
+  <p>Four deliberate trade-offs. Each with a specific alternative I rejected.</p>
+
+  <div class="decision-card">
+    <div class="decision-title">1. Markdown as the Control Plane, not Notion / Airtable / SQL</div>
+    <div class="decision-row"><span class="k">Rejected</span><span class="v">Structured databases (Notion, Airtable, Postgres). Schema-enforced, queryable, multi-user ready.</span></div>
+    <div class="decision-row"><span class="k">Chosen</span><span class="v">A single Markdown file with YAML-ish front-matter per task.</span></div>
+    <div class="decision-row"><span class="k">Reasoning</span><span class="v"><strong>Latency-to-edit &lt; 1 second</strong>, zero vendor dependency, git-versioned, human-readable without tooling, LLM-parseable without schema inference. The cost &mdash; no schema enforcement &mdash; is recoverable by the state-machine layer (see decision 2).</span></div>
+    <div class="decision-row"><span class="k">When to revisit</span><span class="v">If multi-operator concurrent editing becomes a hard requirement, or task volume exceeds ~500 entries where Markdown parsing becomes bottleneck.</span></div>
+  </div>
+
+  <div class="decision-card">
+    <div class="decision-title">2. Typed State Machine, not Natural-Language Status</div>
+    <div class="decision-row"><span class="k">Rejected</span><span class="v">Free-form status strings ("waiting for client", "in progress", "blocked on API").</span></div>
+    <div class="decision-row"><span class="k">Chosen</span><span class="v">Typed state tokens: <code>ready</code> / <code>blocked:siyao:send-brief</code> / <code>running:agent-a4b:2026-04-20T15:25Z</code> / <code>done</code> / <code>failed:exhausted_retries</code></span></div>
+    <div class="decision-row"><span class="k">Reasoning</span><span class="v">A typed state is a <strong>protocol</strong>, not a label. The LLM parsing it can reason about dependency chains, deadlock conditions, and timestamp validity &mdash; not just pattern-match strings. <strong>Biggest single impact on system intelligence</strong> (see Part 5).</span></div>
+    <div class="decision-row"><span class="k">Cost</span><span class="v">One-time migration of all existing tasks (13 cards) + discipline to maintain taxonomy. Small upfront, compounding downstream.</span></div>
+  </div>
+
+  <div class="decision-card">
+    <div class="decision-title">3. Single-Writer Concurrency, not Distributed Locks</div>
+    <div class="decision-row"><span class="k">Rejected</span><span class="v">Multi-agent concurrent writes to <code>task-board.md</code> with distributed locking (<code>flock</code>, file-append patterns, CRDT).</span></div>
+    <div class="decision-row"><span class="k">Chosen</span><span class="v">Strict single-writer protocol: <strong>only the main agent writes state</strong>. Subagents execute tasks in parallel and return structured results; main agent serializes state updates.</span></div>
+    <div class="decision-row"><span class="k">Reasoning</span><span class="v">Markdown files are not transactional. Concurrent writes cause lost updates, structural corruption, or unparseable states &mdash; cascading failures across the system. Single-writer limits parallelism bandwidth but eliminates an entire class of race-condition bugs at zero runtime cost.</span></div>
+    <div class="decision-row"><span class="k">Trade-off</span><span class="v">Execution parallelism is preserved (up to 3 concurrent subagents); state serialization becomes the coordination bottleneck only if task throughput exceeds ~1/sec sustained. Not a real constraint for this workload.</span></div>
+  </div>
+
+  <div class="decision-card">
+    <div class="decision-title">4. Quiescence Gate, not Simple Debounce</div>
+    <div class="decision-row"><span class="k">Rejected</span><span class="v">Fixed 2-second debounce on file watcher events.</span></div>
+    <div class="decision-row"><span class="k">Chosen</span><span class="v">Watcher debounce (2s) <em>plus</em> a quiescence gate: require <strong>30 seconds of file idle</strong> before the executor proceeds. Polls every 5s; resets if any change detected.</span></div>
+    <div class="decision-row"><span class="k">Reasoning</span><span class="v">A user mid-edit can trigger the watcher 5&ndash;10 times during one logical "save." Without quiescence, the executor races the user; state updates collide with in-progress edits. The 30s gate aligns automated processing with the user&rsquo;s natural pause rhythm.</span></div>
+    <div class="decision-row"><span class="k">Cost</span><span class="v">30-second latency floor on processing. Acceptable for asynchronous task flow; not appropriate for real-time chat agents.</span></div>
+  </div>
+
+  <div class="decision-card">
+    <div class="decision-title">5. No RAG, No Fine-Tuning — Context Fits in a Prompt</div>
+    <div class="decision-row"><span class="k">Rejected</span><span class="v">Retrieval-augmented generation over task history, or fine-tuning a model on past task decisions.</span></div>
+    <div class="decision-row"><span class="k">Chosen</span><span class="v">Load the full <code>task-board.md</code> (typically 1&ndash;3K tokens) directly into each decision call. No vector DB, no embeddings, no training.</span></div>
+    <div class="decision-row"><span class="k">Reasoning</span><span class="v">RAG earns its cost when the knowledge base exceeds context window, or when retrieval precision itself is the product. Neither applies here: the full state is short, cheap to include, and the decision layer needs <em>all</em> active tasks to reason about dependency chains &mdash; partial retrieval would break that. Fine-tuning is the wrong tool for routing logic that changes weekly.</span></div>
+    <div class="decision-row"><span class="k">When to revisit</span><span class="v">If task history &gt; ~50K tokens sustained, or if cross-workflow queries need semantic search. Until then, the bottleneck isn&rsquo;t retrieval &mdash; it&rsquo;s the state-machine contract.</span></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== PART 4 ===== -->
+<section>
+  <div class="part-label">Part 4</div>
+  <h2>Measurable Results</h2>
+  <p>Baseline tracking started 2026-04-20. Numbers reflect the first runtime week; some are estimated from initial runs with methodology noted.</p>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-value">~2s</div>
+      <div class="metric-label">File-change detection</div>
+      <div class="metric-note">Measured from <code>events.jsonl</code> &mdash; time from save to <code>file_changed_triggered</code> event.</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">30s</div>
+      <div class="metric-label">Pre-execution gate</div>
+      <div class="metric-note">Deliberate idle-requirement to prevent partial-edit execution.</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">~30s</div>
+      <div class="metric-label">End-to-end task resolution</div>
+      <div class="metric-note">For deterministic tasks (state routing, status checks). Subagent tasks vary by workload.</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">&lt;30min</div>
+      <div class="metric-label">Dead-lock recovery</div>
+      <div class="metric-note">Self-healing: stuck <code>running:*</code> states auto-reset. Zero manual intervention required.</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">~$10-30</div>
+      <div class="metric-label">Monthly runtime cost</div>
+      <div class="metric-note">LLM API only. No separate hosting cost (runs on laptop via <code>launchd</code>).</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">100%</div>
+      <div class="metric-label">Critical-action approval rate</div>
+      <div class="metric-note">All destructive / irreversible actions gated behind human-in-the-loop by design, not by bug.</div>
+    </div>
+  </div>
+
+  <h4>Efficiency Gains (Conservative Estimate)</h4>
+  <p>Before the system: manual task-list check &amp; routine research tasks consumed an estimated <strong>8&ndash;12 hours / week</strong>. After the system: routine tasks (competitive research, documentation drafting, market scans) are routed to parallel subagents without requiring real-time supervision.</p>
+  <p>Observed first-week output: <strong>5 substantive research / writing tasks completed without active supervision</strong> (representative examples: 260-line competitor analysis, 895-line architectural case study, 18-JD market scan, HR-perspective portfolio review).</p>
+  <p class="metric-note">Methodology: hours-saved estimates from self-reported pre-baseline. Accurate quantification begins week 2 (ongoing).</p>
+</section>
+
+<hr class="divider">
+
+<!-- ===== PART 5 ===== -->
+<section>
+  <div class="part-label">Part 5</div>
+  <h2>Emergent Behavior (The Core Insight)</h2>
+
+  <p>I programmed the decision layer to do one thing: <strong>find tasks marked <code>ready</code> and execute them</strong>. Skip everything else.</p>
+
+  <p>On the first production run, it did something I didn&rsquo;t program it to do:</p>
+
+  <ul>
+    <li><strong>Caught a semantic inconsistency</strong> I had written: a task was marked <code>blocked:task:TASK-015</code>, but TASK-015 had status <code>done</code>. The skill flagged the dependency chain was broken, suggested promoting the task to <code>ready</code>, and asked whether that matched my intent.</li>
+    <li><strong>Identified scope ambiguity</strong> in a task I had marked <code>ready</code>: it compared the task&rsquo;s <code>Measure</code> field against available inputs, noticed a required artifact (portfolio URL) was missing, and refused to execute &mdash; deferring to me for clarification.</li>
+    <li><strong>Detected a timezone bug</strong> in a status timestamp I&rsquo;d written manually: <code>running:claude-a:2026-04-20T15:25Z</code> was local time mislabeled as UTC. The skill computed that this timestamp was 2 hours in the future relative to <code>now</code>, flagged it as an anomaly, and asked for clarification.</li>
+  </ul>
+
+  <p>None of these behaviors were in the prompt. They emerged from the state-machine design.</p>
+
+  <div class="takeaway">
+    <p>Same LLM. Same task-board. Different agent behavior, depending on whether status is a <em>label</em> or a <em>protocol</em>. A natural-language status field ("waiting", "in progress") gives the model a token to match. A typed state with structured sub-fields gives the model a protocol to reason about. The takeaway I&rsquo;d package for a product team: <strong>structured state is what turns agents from execution bots into reasoning partners &mdash; not better prompts</strong>.</p>
+  </div>
+
+  <p>This has implications for how agent systems should be designed. Most teams iterate on prompts when agent behavior is inadequate. The higher-leverage move is often to change the <em>type system</em> that the agent operates within.</p>
+</section>
+
+<hr class="divider">
+
+<!-- ===== PART 6 ===== -->
+<section>
+  <div class="part-label">Part 6</div>
+  <h2>Generalization &amp; Next Steps</h2>
+
+  <h4>Pattern Transfer</h4>
+  <p>The architecture is deliberately not task-automation-specific. The same five-layer pattern (control-plane file + event-driven scheduler + stateless executor + typed state machine + append-only audit log) maps cleanly to several workflow categories listed in a current client brief (Shopify operator) I&rsquo;m scoping for architecture review:</p>
+
+  <table>
+    <tr><th>Workflow</th><th>Control Plane</th><th>Decision Layer Task</th></tr>
+    <tr><td>Support ticket triage</td><td>Helpdesk ticket queue</td><td>Classify + draft reply + flag for review</td></tr>
+    <tr><td>Pre-order management</td><td>Supplier ETA tracker</td><td>Detect delta + generate customer notices</td></tr>
+    <tr><td>Product creation from supplier data</td><td>Inbound spreadsheet queue</td><td>Extract fields + normalize + push to draft</td></tr>
+    <tr><td>Collection-buying intake</td><td>Inbound inquiry log</td><td>Extract + score + draft follow-up</td></tr>
+  </table>
+
+  <p>The same state-machine discipline (<code>ready</code> / <code>blocked:*</code> / <code>running:*</code> / <code>done</code>) applies to all of them. The only workflow-specific component is the prompt template in the decision layer. Infrastructure is shared.</p>
+
+  <h4>Planned Evolution</h4>
+  <ul>
+    <li><strong>Observability surface</strong>: local HTML dashboard served via <code>launchd</code> showing task throughput, error rates, and latency distribution over time.</li>
+    <li><strong>Prompt version control</strong>: decision-layer prompts moved to a separate git repository with semantic versioning &amp; regression tests against a captured input corpus.</li>
+    <li><strong>MCP-compatible handoff protocol</strong>: standardized result schema aligned with the Model Context Protocol, so subagents can chain without main-agent mediation when tasks are independent &mdash; and so external MCP-speaking agents could plug into this runtime without protocol translation.</li>
+    <li><strong>State persistence upgrade</strong>: SQLite alongside Markdown if cross-workflow querying becomes a recurring need (Markdown remains the human UI).</li>
+  </ul>
+
+  <h4>What I&rsquo;d Do Differently</h4>
+  <ul>
+    <li><strong>Instrument metrics from day one</strong>, not day seven. Even rough counters in <code>events.jsonl</code> are worth more than precise metrics added later &mdash; retroactive measurement forces estimation.</li>
+    <li><strong>Document the state machine before coding it</strong>. I migrated from natural-language status to typed states <em>after</em> running into parsing ambiguities. The right order was: state machine on paper → skill design → code. I did it reversed.</li>
+  </ul>
+
+  <div class="takeaway">
+    <p>Building this system taught me one thing I can take to any agent product: <strong>the state machine is the product</strong>. Prompts, subagents, scheduling layers &mdash; all replaceable. The state contract between human intent and agent action is what persists, scales, and determines whether the system can reason or only execute.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ===== PART 7 ===== -->
+<section>
+  <div class="part-label">Part 7</div>
+  <h2>Build vs. Buy — Why I Didn&rsquo;t Use Coze, Dify, or n8n</h2>
+
+  <p><strong>Scope honesty first</strong>: this is a single-operator runtime I built for my own task flow, not a platform product. It solves the specific shape of one person orchestrating a handful of workflows. The question I had to answer before writing any code was not "build vs. launch a competitor to Coze" &mdash; it was "does an existing tool already solve this shape, and if so, which?" The analysis below is what I did before deciding to build.</p>
+
+  <h4>What I was optimising for</h4>
+  <ul>
+    <li><strong>Operator = me, single writer.</strong> No multi-user editing. No customer-facing UI. No handoff to a non-technical PM.</li>
+    <li><strong>State is already Markdown.</strong> Everything I track &mdash; tasks, journals, project notes &mdash; lives in plain text files inside a git repo. Any tool that wants me to re-enter that state into a canvas is a non-starter.</li>
+    <li><strong>Edits at the speed of a keystroke.</strong> I wanted to be able to add a task from any editor, any terminal, and have the runtime notice within seconds. No form submission, no save-and-deploy cycle.</li>
+    <li><strong>Typed state the LLM can reason about.</strong> Not a colour tag or free-text status, but a protocol with failure modes the model can inspect (<code>blocked:task:TASK-010</code> means TASK-010 isn&rsquo;t done yet; the model can check).</li>
+  </ul>
+
+  <h4>What each option would have given me &mdash; and why I passed</h4>
+
+  <div class="decision-card">
+    <div class="decision-title">Coze (ByteDance) &mdash; visual agent builder, cloud SaaS</div>
+    <div class="decision-row"><span class="k">Strengths</span><span class="v">Fastest path to a shipped agent for a non-technical team. Rich pre-built tool integrations inside the ByteDance ecosystem.</span></div>
+    <div class="decision-row"><span class="k">Why I passed</span><span class="v">My state is already Markdown + git. Using Coze means re-creating that state in a canvas UI and accepting vendor lock-in. For a solo operator who lives in the terminal, the canvas is friction, not help.</span></div>
+  </div>
+
+  <div class="decision-card">
+    <div class="decision-title">Dify (open source) &mdash; LLM app platform, self-hosted</div>
+    <div class="decision-row"><span class="k">Strengths</span><span class="v">RAG, agent, and dataset management in one place. Good choice for a team building a product that bundles several AI capabilities.</span></div>
+    <div class="decision-row"><span class="k">Why I passed</span><span class="v">Dify is aimed at shipping a user-facing product; it pays its complexity tax in features I don&rsquo;t use (multi-tenant datasets, conversation management, embedded UI). For a personal task runtime, Docker + Postgres + Redis + a web UI is overkill.</span></div>
+  </div>
+
+  <div class="decision-card">
+    <div class="decision-title">n8n (open source) &mdash; node-graph workflow automation</div>
+    <div class="decision-row"><span class="k">Strengths</span><span class="v">400+ pre-built integrations. Best choice if the AI step is one node inside a larger multi-SaaS pipeline.</span></div>
+    <div class="decision-row"><span class="k">Why I passed</span><span class="v">The AI decision isn&rsquo;t one node in my workflow &mdash; it <em>is</em> the routing layer. n8n treats LLMs as yet another integration; my design treats the typed state as the first-class input the LLM reasons about. Different centre of gravity.</span></div>
+  </div>
+
+  <h4>The common decision</h4>
+  <p>All three platforms abstract the workflow behind a UI and a schema you configure through that UI. That&rsquo;s the right call when the operator is non-technical, when state needs to be shared across a team, or when the workflow is the product. None of those apply here. For a solo operator whose workflow state is already text, the cost of introducing a second state system (canvas + vendor storage) outweighs the convenience of pre-built nodes.</p>
+
+  <p>Put differently: the reason this runtime is ~300 lines of shell + a skill definition, rather than a deploy of Dify, is not that I think I&rsquo;d build it better. It&rsquo;s that my shape (one operator, Markdown-native, terminal-native, zero-vendor) is the shape that these platforms explicitly <em>don&rsquo;t</em> optimise for. For their actual audience &mdash; cross-functional teams shipping user-facing agents &mdash; they&rsquo;re the right choice, and I&rsquo;d recommend them.</p>
+
+  <div class="takeaway">
+    <p>The transferable skill isn&rsquo;t "I built a better platform." It&rsquo;s: before writing a line of code, I named the four things I actually needed, mapped each existing tool against them, and picked the build option only when every tool failed a specific criterion. That&rsquo;s the same build-vs.-buy frame I&rsquo;d apply to any agent platform decision in a product role &mdash; including recommending <em>against</em> a custom build when an existing tool covers the scope.</p>
+  </div>
+</section>
+
+<section style="margin-bottom: 5rem;">
+  <hr class="divider">
+  <p style="font-size: 0.82rem; color: var(--text-light); text-align: center;">
+    <strong>Siyao Zhang</strong> &middot; Available from September 2026, Beijing &middot;
+    <a href="index.html#contact" style="color: var(--accent-slate); font-weight: 600;">Contact</a>
+  </p>
+</section>
+
+</div>
+
+</body>
+</html>
