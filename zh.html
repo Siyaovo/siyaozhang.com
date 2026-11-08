@@ -1471,6 +1471,37 @@ h1,h2,h3,.section-header h2{font-family:var(--font-serif);font-weight:700;letter
         </div>
       </div>
 
+      <!-- Mini Agent Harness -->
+      <div class="project-card reveal" style="--card-accent: #3D5A80;">
+        <div>
+          <div class="project-card-top">
+            <span class="project-type">Agent 评测 &middot; 开源</span>
+            <span class="project-year">2026</span>
+          </div>
+          <h3>Mini Agent Harness — 一个小型 Harness 和检验它的回归集</h3>
+          <p class="project-context">GitHub 公开仓库 &middot; 只用 Python 标准库 &middot; 14 个回归用例</p>
+          <p class="project-description">
+            一个小型 Agent Harness：带步数上限的循环、两个工具、每一步都有轨迹记录，并且 Agent 只能<strong>提出</strong>文件修改，必须由人确认后才会写入。回归集覆盖正常运行、工具报错、安全、模型出错、停止和人工确认六类情况。
+          </p>
+          <div class="project-finding">
+            <strong>检验检查本身：</strong>我故意拆掉路径防护和覆盖检查，看回归集能不能发现。结果有一个用例照样通过了，因为它要读的文件本来就不存在。我把这个用例改成先在工作区外放一个真实文件。
+          </div>
+          <div class="project-tech">
+            <span class="tech-tag">Agent 评测</span>
+            <span class="tech-tag">回归测试</span>
+            <span class="tech-tag">人工确认</span>
+            <span class="tech-tag">运行轨迹</span>
+            <span class="tech-tag">Python</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://github.com/Siyaovo/mini-agent-harness" target="_blank" rel="noopener" class="project-link">
+              在 GitHub 上查看
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
       <!-- Function Calling Demo -->
       <div class="project-card reveal" style="--card-accent: #7A8B9A;">
         <div>

@@ -1564,6 +1564,37 @@ nav .logo,nav .nav-links a{white-space:nowrap}
         </div>
       </div>
 
+      <!-- Mini Agent Harness -->
+      <div class="project-card reveal" style="--card-accent: #3D5A80;">
+        <div>
+          <div class="project-card-top">
+            <span class="project-type">Agent Evaluation &middot; Open Source</span>
+            <span class="project-year">2026</span>
+          </div>
+          <h3>Mini Agent Harness &mdash; a small harness and the regression set that checks it</h3>
+          <p class="project-context">Public GitHub repo &middot; Python standard library only &middot; 14 regression cases</p>
+          <p class="project-description">
+            A small agent harness: a loop with a step limit, two tools, a trace of every step, and a rule that the agent can only <em>propose</em> a file change until a person confirms it. The regression set covers normal runs, tool errors, safety, model errors, stopping and confirmation.
+          </p>
+          <div class="project-finding">
+            <strong>Checking the checks:</strong> I broke the path guard and the overwrite check on purpose to see whether the cases would catch it. One case still passed, because the file it tried to read did not exist. I fixed the case so it plants a real file.
+          </div>
+          <div class="project-tech">
+            <span class="tech-tag">Agent Evaluation</span>
+            <span class="tech-tag">Regression Testing</span>
+            <span class="tech-tag">Human-in-the-loop</span>
+            <span class="tech-tag">Tracing</span>
+            <span class="tech-tag">Python</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://github.com/Siyaovo/mini-agent-harness" target="_blank" rel="noopener" class="project-link">
+              View on GitHub
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
       <!-- Function Calling Demo -->
       <div class="project-card reveal" style="--card-accent: #7A8B9A;">
         <div>

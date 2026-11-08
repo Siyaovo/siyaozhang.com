@@ -16,3 +16,4 @@ Every published version has a git tag, so any of them can be restored with `git 
 - `v2026-11-08-mono`: same layout and text, black-and-white palette
 - `v2026-11-08-navy`: white, black and navy for the page; project visuals keep their colours
 - `v2026-11-08-review`: practitioner review fixes, rewritten Chinese page, Experience before Projects, images as files, favicon and share image
+- `v2026-11-08-harness`: adds the Mini Agent Harness evaluation card
