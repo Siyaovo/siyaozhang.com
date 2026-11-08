@@ -278,6 +278,14 @@ tr:last-child td { border-bottom: none; }
     <div class="decision-row"><span class="k">Reasoning</span><span class="v">RAG earns its cost when the knowledge base exceeds context window, or when retrieval precision itself is the product. Neither applies here: the full state is short, cheap to include, and the decision layer needs <em>all</em> active tasks to reason about dependency chains &mdash; partial retrieval would break that. Fine-tuning is the wrong tool for routing logic that changes weekly.</span></div>
     <div class="decision-row"><span class="k">When to revisit</span><span class="v">If task history &gt; ~50K tokens sustained, or if cross-workflow queries need semantic search. Until then, the bottleneck isn&rsquo;t retrieval &mdash; it&rsquo;s the state-machine contract.</span></div>
   </div>
+
+  <div class="decision-card">
+    <div class="decision-title">6. Host-Native Tool Use, not Custom Function Calling Schemas</div>
+    <div class="decision-row"><span class="k">Rejected</span><span class="v">Author JSON-schema tool definitions and an in-process function-calling loop (Anthropic API <code>tools=</code> pattern) inside the decision layer.</span></div>
+    <div class="decision-row"><span class="k">Chosen</span><span class="v">Delegate tool use to the Claude CLI host (Bash / Read / Edit / Glob built-ins). Subagents run inside CLI processes that already expose the right tool surface; the runtime only specifies <em>what</em> to do, not <em>how</em> to call tools.</span></div>
+    <div class="decision-row"><span class="k">Reasoning</span><span class="v">Custom function calling earns its cost when the host lacks tool use, when strict schema validation is a compliance requirement, or when the toolset is stable enough to justify the maintenance tax. None applies: the host <em>is</em> the tool layer, the runtime is a batch orchestrator on a laptop, and the tools in use (file I/O, subagent dispatch) are already wrapped. A parallel JSON-schema layer would duplicate the CLI&rsquo;s contract without adding capability. A separate <a href="https://github.com/Siyaovo/function-calling-demo" style="color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent);">function-calling demo</a> shows the pattern when the host <em>doesn&rsquo;t</em> provide tool use &mdash; i.e., when it earns its keep.</span></div>
+    <div class="decision-row"><span class="k">When to revisit</span><span class="v">If the orchestrator needs to run in a context without Claude CLI (deployed SaaS backend, cron on a VM), or if the tool contract has to be version-pinned for downstream consumers.</span></div>
+  </div>
 </section>
 
 <hr class="divider">
