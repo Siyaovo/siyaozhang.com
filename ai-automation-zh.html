@@ -7,7 +7,7 @@
 <meta name="description" content="基于状态机的 Agent 编排运行时。张思瑶设计——以 Markdown 为控制平面的 LLM 任务路由系统，具备自愈、死信队列和人工审核节点。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   --cream: #FFFFFF; --cream-dark: #F3F5F8; --warm-white: #FFFFFF;
@@ -114,7 +114,12 @@ tr:last-child td { border-bottom: none; }
   .takeaway p { font-size: 0.86rem; }
   code { word-break: break-word; }
 }
+:root{--font-serif:'DM Serif Display','Noto Serif SC','Songti SC',serif;--font-sans:'Source Sans 3','PingFang SC','Noto Sans SC','Hiragino Sans GB','Microsoft YaHei',sans-serif}
+body{font-family:var(--font-sans);line-height:1.85}
+h1,h2,h3,h4{font-family:var(--font-serif);font-weight:700;letter-spacing:.02em}
+em,i{font-style:normal}
 </style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
 
@@ -124,7 +129,8 @@ tr:last-child td { border-bottom: none; }
   <div class="container">
     <div class="label">Agent 编排 · 系统设计</div>
     <h1>Task Router Agent<br>用 Markdown 文件作为控制平面的任务调度系统</h1>
-    <p class="subtitle">这是一套 LLM 驱动的任务运行时——路由、执行、自愈全部自动完成。一个 Markdown 文件作为 Agent 的控制平面，整套系统不依赖于任何打开着的会话——编辑文件后，工作会在后台继续。下面讲清楚：这套架构的设计思路、我做出的几个关键取舍、实际运行数据，以及一个我没有刻意编程、系统却自发表现出的关键行为。</p>
+    <p class="subtitle">这是一套 LLM 驱动的任务运行时——路由、执行、任务卡住后的恢复都能自动完成。一个 Markdown 文件作为 Agent 的控制平面，整套系统不依赖于任何打开着的会话——当时，编辑文件后工作就会在后台继续。下面讲清楚：这套架构的设计思路、我做出的几个关键取舍、实际运行数据，以及一个我没有刻意编程、系统却自发表现出的关键行为。</p>
+    <p class="subtitle" style="font-size:0.85rem;opacity:0.75;margin-top:0.6rem">本文写于 2026 年 4 月。2026 年 9 月，后台运行器因登录凭证过期停止运行；任务看板本身至今仍在日常使用。</p>
   </div>
 </div>
 
@@ -133,7 +139,7 @@ tr:last-child td { border-bottom: none; }
 <section>
   <div class="part-label">第一部分</div>
   <h2>问题</h2>
-  <p><strong>背景：</strong>作为一个独立运营者，我同时在推进 4 条线（内容生产、首位客户的架构评审、作品集搭建、学业）。任务状态散落在不同工具里——每次切换上下文都要花 15&ndash;30 分钟重新进入状态，才能真正开始工作。</p>
+  <p><strong>背景：</strong>作为一个独立运营者，我同时在推进 4 条线（内容生产、一个咨询副业项目、作品集搭建、学业）。任务状态散落在不同工具里——每次切换上下文都要花 15&ndash;30 分钟重新进入状态，才能真正开始工作。</p>
   <p><strong>产品约束：</strong>我想要的任务系统需要满足两点：可以<strong>随时加任务</strong>；分配给自动化的任务能<strong>自己跑完</strong>，不需要我守在电脑前。合上电脑，几个小时后回来，任务已经处理完。</p>
   <p><strong>为什么这是 Agent 设计的关键：</strong>大多数"AI 助手"一关上聊天窗口就停止工作——它们绑定的是对话，而非工作本身。构建一个<em>不依赖会话生命周期</em>的 Agent 运行时，是一个完全不同的设计问题；这也是让 Agent 从"工具"升级到"基础设施"的分水岭。</p>
   <div class="takeaway">
@@ -184,7 +190,7 @@ tr:last-child td { border-bottom: none; }
   <div class="decision-card">
     <div class="decision-title">1. 用 Markdown 做控制平面，不用 Notion / Airtable / SQL</div>
     <div class="decision-row"><span class="k">拒绝</span><span class="v">结构化数据库（Notion、Airtable、Postgres）——schema 强制、可查询、天然支持多用户</span></div>
-    <div class="decision-row"><span class="k">选择</span><span class="v">一个 Markdown 文件 + 每个任务的 YAML 式元数据</span></div>
+    <div class="decision-row"><span class="k">选择</span><span class="v">一个 Markdown 文件，每个任务下列几个固定字段</span></div>
     <div class="decision-row"><span class="k">理由</span><span class="v"><strong>编辑延迟 &lt; 1 秒</strong>，零厂商依赖，git 可版本化，无工具即可读，LLM 无需 schema inference 即可解析。代价——缺 schema 约束——由状态机层（见决策 2）补足。</span></div>
     <div class="decision-row"><span class="k">何时重审</span><span class="v">多人并发编辑成为硬需求，或任务量超 ~500 条 Markdown 解析变瓶颈时</span></div>
   </div>
@@ -227,20 +233,17 @@ tr:last-child td { border-bottom: none; }
     <div class="metric-card"><div class="metric-value">~30s</div><div class="metric-label">端到端任务处理</div><div class="metric-note">对确定性任务（状态路由、状态检查）；subagent 任务因工作量变化</div></div>
     <div class="metric-card"><div class="metric-value">&lt;30min</div><div class="metric-label">死锁恢复</div><div class="metric-note">自愈：卡住的 <code>running:*</code> 状态自动重置。零手动介入。</div></div>
     <div class="metric-card"><div class="metric-value">~$10-30</div><div class="metric-label">月运行成本</div><div class="metric-note">仅 LLM API。无额外托管成本（通过 <code>launchd</code> 在笔记本运行）</div></div>
-    <div class="metric-card"><div class="metric-value">100%</div><div class="metric-label">关键操作审批率</div><div class="metric-note">所有破坏性/不可逆操作都需人工审核——刻意设计，不是 bug</div></div>
   </div>
 
-  <h4>效率提升（保守估算）</h4>
-  <p>系统前：手动查任务清单 + 常规研究任务约占<strong> 8&ndash;12 小时/周</strong>。系统后：常规任务（竞品调研、文档起草、市场扫描）被路由到并行 subagent，无需实时督促。</p>
+  <h4>第一周的实际产出</h4>
   <p>首周观察产出：<strong>5 项实质性研究/写作任务在无监督情况下完成</strong>（代表例：260 行竞品分析、895 行架构 case study、18 份 JD 市场扫描、HR 视角作品集评估）。</p>
-  <p class="metric-note">方法论：效率估算基于自报基线。精确量化从第 2 周开始（进行中）。</p>
 </section>
 
 <hr class="divider">
 
 <section>
   <div class="part-label">第五部分</div>
-  <h2>Emergent Behavior · 核心洞察</h2>
+  <h2>意料之外的表现 · 一个观察</h2>
 
   <p>我给决策层的编程只有一件事：<strong>找 <code>ready</code> 状态的任务，执行它们</strong>。其他一律跳过。</p>
 
@@ -252,10 +255,10 @@ tr:last-child td { border-bottom: none; }
     <li><strong>发现了一个时区 bug</strong>：我手动写的 <code>running:claude-a:2026-04-20T15:25Z</code> 实际是本地时间被错标为 UTC。skill 计算出这个时间戳比 <code>now</code> 领先 2 小时，标为 anomaly 问我确认。</li>
   </ul>
 
-  <p>这些行为都不在 prompt 里。它们从状态机设计中涌现出来。</p>
+  <p>这些都不是我在 prompt 里要求的。我的假设是：类型化的状态让这些矛盾更容易被看出来。不过我还没做对照实验，所以这只是观察，不是结论。</p>
 
   <div class="takeaway">
-    <p>同一个 LLM，同一张 task-board，agent 的行为可以截然不同——全看 status 是<em>标签</em>还是<em>协议</em>。自然语言 status（"等待"、"进行中"）给模型的只是一串可以 pattern match 的文本；类型化 status + 结构化子字段，给模型的是一套可以推理的协议。给产品团队带走的核心结论：<strong>让 agent 从"执行机器"进化成"推理搭档"，真正的杠杆在结构化的状态协议，prompt 只是最后一层调优</strong>。</p>
+    <p>我目前的理解是：同一个模型，面对“标签式”的状态和“协议式”的状态，表现可能很不一样。自然语言 status（"等待"、"进行中"）给模型的只是一串可以 pattern match 的文本；类型化 status + 结构化子字段，给模型的是一套可以推理的协议。给产品团队带走的核心结论：<strong>让 agent 从"执行机器"进化成"推理搭档"，真正的杠杆在结构化的状态协议，prompt 只是最后一层调优</strong>。</p>
   </div>
 
   <p>这对 agent 系统设计的含义很具体：多数团队在 agent 行为不满意时，第一反应是去迭代 prompt。但更高杠杆的动作，往往是修改 agent 所运行的那个<em>类型系统</em>本身。</p>
@@ -268,7 +271,7 @@ tr:last-child td { border-bottom: none; }
   <h2>泛化与下一步</h2>
 
   <h4>模式迁移</h4>
-  <p>这套架构不是任务自动化专用的。同样的 5 层模式（控制平面文件 + 事件驱动调度 + 无状态执行器 + 类型化状态机 + 只追加审计日志）可以直接对应到一位 Shopify 客户在简报里提出的几类工作流——我正在为这份简报做架构评审：</p>
+  <p>这套架构不是任务自动化专用的。同样的 5 层模式（控制平面文件 + 事件驱动调度 + 无状态执行器 + 类型化状态机 + 只追加审计日志）也能对应到电商运营里常见的几类工作流：</p>
 
   <table>
     <tr><th>工作流</th><th>控制平面</th><th>决策层任务</th></tr>
@@ -280,7 +283,7 @@ tr:last-child td { border-bottom: none; }
 
   <p>同一套状态机规范（<code>ready</code> / <code>blocked:*</code> / <code>running:*</code> / <code>done</code>）对每一种都适用。真正与具体工作流相关的只有决策层的 prompt 模板——基础设施完全可以共享。</p>
 
-  <h4>下一步演进</h4>
+  <h4>当时的计划（2026 年 4 月）</h4>
   <ul>
     <li><strong>可观测性界面</strong>：由 <code>launchd</code> 托管一个本地 HTML dashboard，展示任务吞吐量、错误率、延迟分布等指标随时间的变化</li>
     <li><strong>Prompt 版本管理</strong>：把决策层 prompt 独立进 git 仓库 + 语义化版本 + 基于历史输入语料的回归测试</li>

@@ -115,6 +115,7 @@ tr:last-child td { border-bottom: none; }
   code { word-break: break-word; }
 }
 </style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
 
@@ -124,7 +125,8 @@ tr:last-child td { border-bottom: none; }
   <div class="container">
     <div class="label">Orchestration d&rsquo;agents · conception système</div>
     <h1>Task Router Agent<br>Un système de routage de tâches à machine à états, piloté par un fichier Markdown</h1>
-    <p class="subtitle">C&rsquo;est un runtime de tâches piloté par LLM — le routage, l&rsquo;exécution et l&rsquo;auto-réparation se font tout seuls. Un simple fichier Markdown sert de plan de contrôle, et l&rsquo;ensemble tourne sans dépendre d&rsquo;une session ouverte : on modifie le fichier, le travail continue en arrière-plan. Dans cette étude : comment j&rsquo;ai conçu l&rsquo;architecture, les arbitrages que j&rsquo;ai faits, les résultats mesurés, et un comportement clé que je n&rsquo;avais pas programmé mais que le système a fait émerger tout seul.</p>
+    <p class="subtitle">C&rsquo;est un runtime de tâches piloté par LLM — le routage, l&rsquo;exécution et la reprise des tâches bloquées se faisaient tout seuls. Un simple fichier Markdown sert de plan de contrôle, et l&rsquo;ensemble tourne sans dépendre d&rsquo;une session ouverte : on modifie le fichier, le travail continuait en arrière-plan. Dans cette étude : comment j&rsquo;ai conçu l&rsquo;architecture, les arbitrages que j&rsquo;ai faits, les résultats mesurés, et un comportement clé que je n&rsquo;avais pas programmé mais que le système a fait émerger tout seul.</p>
+    <p class="subtitle" style="font-size:0.85rem;opacity:0.75;margin-top:0.6rem">Écrit en avril 2026. Depuis septembre 2026, le runtime en arrière-plan est à l’arrêt (identifiants expirés) ; le tableau de tâches, lui, sert toujours au quotidien.</p>
   </div>
 </div>
 
@@ -133,7 +135,7 @@ tr:last-child td { border-bottom: none; }
 <section>
   <div class="part-label">Partie 1</div>
   <h2>Le Problème</h2>
-  <p><strong>Contexte :</strong> en tant qu&rsquo;opératrice solo, je pilote quatre chantiers en parallèle (production de contenu, brief de revue d&rsquo;architecture pour un premier client, portfolio, études). L&rsquo;état des tâches se retrouvait éparpillé entre différents outils, et il me fallait 15 à 30 minutes de « remise en route » à chaque reprise de contexte avant de pouvoir vraiment travailler.</p>
+  <p><strong>Contexte :</strong> en tant qu&rsquo;opératrice solo, je pilote quatre chantiers en parallèle (production de contenu, projet de conseil mené en parallèle, portfolio, études). L&rsquo;état des tâches se retrouvait éparpillé entre différents outils, et il me fallait 15 à 30 minutes de « remise en route » à chaque reprise de contexte avant de pouvoir vraiment travailler.</p>
   <p><strong>Contrainte produit :</strong> je voulais un système de tâches avec deux propriétés : je peux <strong>ajouter du travail à tout moment</strong>, et les tâches confiées à l&rsquo;automatisation <strong>s&rsquo;exécutent toutes seules</strong>, sans que j&rsquo;aie besoin de rester devant la machine. Je ferme l&rsquo;ordinateur, je reviens quelques heures plus tard, et le travail est fait.</p>
   <p><strong>Pourquoi c&rsquo;est un vrai sujet en design d&rsquo;agents :</strong> la plupart des « assistants IA » s&rsquo;arrêtent dès qu&rsquo;on ferme la fenêtre de chat. Ils sont liés à une conversation, pas au travail lui-même. Construire un runtime d&rsquo;agent <em>qui ne dépend pas du cycle de vie de la session</em> est un problème de conception complètement différent — et c&rsquo;est précisément ce basculement qui fait passer un agent du statut d&rsquo;« outil » à celui d&rsquo;« infrastructure ».</p>
   <div class="takeaway">
@@ -184,7 +186,7 @@ tr:last-child td { border-bottom: none; }
   <div class="decision-card">
     <div class="decision-title">1. Markdown comme plan de contrôle, pas Notion / Airtable / SQL</div>
     <div class="decision-row"><span class="k">Rejeté</span><span class="v">Bases de données structurées (Notion, Airtable, Postgres). Schéma imposé, requêtable, multi-utilisateur natif.</span></div>
-    <div class="decision-row"><span class="k">Choisi</span><span class="v">Un unique fichier Markdown avec une front-matter à la YAML par tâche.</span></div>
+    <div class="decision-row"><span class="k">Choisi</span><span class="v">Un unique fichier Markdown, avec quelques champs étiquetés par tâche.</span></div>
     <div class="decision-row"><span class="k">Raisonnement</span><span class="v"><strong>Latence d&rsquo;édition &lt; 1 seconde</strong>, zéro dépendance fournisseur, versionné via git, lisible sans outillage, parsable par LLM sans inférence de schéma. Le coût — pas de schéma — est compensé par la couche machine à états (voir décision 2).</span></div>
     <div class="decision-row"><span class="k">À revisiter</span><span class="v">Si l&rsquo;édition concurrente multi-opérateurs devient une exigence dure, ou si le volume dépasse ~500 tâches où le parsing Markdown devient goulot.</span></div>
   </div>
@@ -227,20 +229,17 @@ tr:last-child td { border-bottom: none; }
     <div class="metric-card"><div class="metric-value">~30s</div><div class="metric-label">Traitement end-to-end</div><div class="metric-note">Pour tâches déterministes (routage, contrôle d&rsquo;état). Tâches sous-agents variables.</div></div>
     <div class="metric-card"><div class="metric-value">&lt;30min</div><div class="metric-label">Reprise d&rsquo;interblocage</div><div class="metric-note">Auto-réparation : états <code>running:*</code> bloqués réinitialisés. Aucune intervention manuelle requise.</div></div>
     <div class="metric-card"><div class="metric-value">~$10-30</div><div class="metric-label">Coût mensuel</div><div class="metric-note">LLM API uniquement. Aucun coût d&rsquo;hébergement (tourne sur laptop via <code>launchd</code>).</div></div>
-    <div class="metric-card"><div class="metric-value">100%</div><div class="metric-label">Validation actions critiques</div><div class="metric-note">Toute action destructive/irréversible gatée par validation humaine par conception, pas par bug.</div></div>
   </div>
 
-  <h4>Gains d&rsquo;efficacité (estimation conservative)</h4>
-  <p>Avant le système : vérification manuelle de la liste de tâches + recherche routinière consommaient environ <strong>8 à 12 heures/semaine</strong>. Après : les tâches routinières (recherche concurrentielle, rédaction de documents, scans de marché) sont routées vers des sous-agents parallèles sans supervision temps réel.</p>
+  <h4>Première semaine, observé</h4>
   <p>Production observée première semaine : <strong>5 tâches substantielles de recherche/rédaction terminées sans supervision active</strong> (exemples : analyse concurrentielle de 260 lignes, étude de cas architecturale de 895 lignes, scan marché de 18 JD, évaluation portfolio perspective RH).</p>
-  <p class="metric-note">Méthodologie : estimations heures économisées sur base auto-rapportée. Quantification précise démarre semaine 2 (en cours).</p>
 </section>
 
 <hr class="divider">
 
 <section>
   <div class="part-label">Partie 5</div>
-  <h2>Comportement Émergent · L&rsquo;Insight Central</h2>
+  <h2>Comportement inattendu · une observation</h2>
 
   <p>J&rsquo;ai programmé la couche de décision pour faire une seule chose : <strong>trouver les tâches marquées <code>ready</code> et les exécuter</strong>. Ignorer tout le reste.</p>
 
@@ -252,10 +251,10 @@ tr:last-child td { border-bottom: none; }
     <li><strong>A détecté un bug de fuseau horaire</strong> dans un horodatage que j&rsquo;avais écrit manuellement : <code>running:claude-a:2026-04-20T15:25Z</code> était en heure locale mais annoté UTC. Le skill a calculé que l&rsquo;horodatage était 2 heures dans le futur par rapport à <code>now</code>, l&rsquo;a signalé comme anomalie, et a demandé clarification.</li>
   </ul>
 
-  <p>Aucun de ces comportements n&rsquo;était dans le prompt. Ils ont émergé de la conception de la machine à états.</p>
+  <p>Je n&rsquo;avais rien demandé de tout cela dans le prompt. Mon hypothèse : les états typés rendent ces incohérences faciles à repérer. Je n&rsquo;ai pas encore fait de comparaison contrôlée, donc c&rsquo;est une observation, pas un résultat.</p>
 
   <div class="takeaway">
-    <p>Même LLM, même task-board — et pourtant l&rsquo;agent se comporte de manière radicalement différente selon que le statut est une <em>étiquette</em> ou un <em>protocole</em>. Un statut en langage naturel (« en attente », « en cours ») ne donne au modèle qu&rsquo;un token à matcher ; un état typé avec sous-champs structurés lui donne un protocole sur lequel raisonner. Le point que j&rsquo;emporterais pour une équipe produit : <strong>ce qui transforme un agent d&rsquo;un simple exécuteur en véritable partenaire de raisonnement, c&rsquo;est l&rsquo;état structuré ; le prompt n&rsquo;est qu&rsquo;un réglage final</strong>.</p>
+    <p>Mon hypothèse de travail : un même modèle peut se comporter très différemment selon que le statut est une <em>étiquette</em> ou un <em>protocole</em>. Un statut en langage naturel (« en attente », « en cours ») ne donne au modèle qu&rsquo;un token à matcher ; un état typé avec sous-champs structurés lui donne un protocole sur lequel raisonner. Le point que j&rsquo;emporterais pour une équipe produit : <strong>ce qui transforme un agent d&rsquo;un simple exécuteur en véritable partenaire de raisonnement, c&rsquo;est l&rsquo;état structuré ; le prompt n&rsquo;est qu&rsquo;un réglage final</strong>.</p>
   </div>
 
   <p>La conclusion pratique pour un système d&rsquo;agents : quand le comportement d&rsquo;un agent déçoit, la plupart des équipes itèrent sur les prompts. Le levier le plus puissant est souvent ailleurs — dans le <em>système de types</em> au sein duquel l&rsquo;agent opère.</p>
@@ -268,7 +267,7 @@ tr:last-child td { border-bottom: none; }
   <h2>Généralisation &amp; Prochaines Étapes</h2>
 
   <h4>Transfert du Pattern</h4>
-  <p>L&rsquo;architecture n&rsquo;est volontairement pas spécifique à l&rsquo;automatisation de tâches. Le même pattern à 5 couches (fichier plan de contrôle + ordonnanceur événementiel + exécuteur sans état + machine à états typée + journal d&rsquo;audit append-only) se mappe directement à plusieurs catégories de workflows listées dans un brief client en cours (opérateur Shopify) dont je réalise la revue d&rsquo;architecture :</p>
+  <p>L&rsquo;architecture n&rsquo;est volontairement pas spécifique à l&rsquo;automatisation de tâches. Le même pattern à 5 couches (fichier plan de contrôle + ordonnanceur événementiel + exécuteur sans état + machine à états typée + journal d&rsquo;audit append-only) se transpose à plusieurs workflows courants dans l&rsquo;e-commerce :</p>
 
   <table>
     <tr><th>Workflow</th><th>Plan de contrôle</th><th>Tâche de la couche décision</th></tr>
@@ -280,7 +279,7 @@ tr:last-child td { border-bottom: none; }
 
   <p>La même discipline de machine à états (<code>ready</code> / <code>blocked:*</code> / <code>running:*</code> / <code>done</code>) s&rsquo;applique à tous. Le seul composant workflow-spécifique est le template de prompt dans la couche de décision. L&rsquo;infrastructure est partagée.</p>
 
-  <h4>Évolution Planifiée</h4>
+  <h4>Ce que je prévoyais à l&rsquo;époque (avril 2026)</h4>
   <ul>
     <li><strong>Surface d&rsquo;observabilité</strong> : dashboard HTML local servi via <code>launchd</code>, affichant débit de tâches, taux d&rsquo;erreurs, distribution de latence dans le temps.</li>
     <li><strong>Versioning des prompts</strong> : prompts de la couche de décision déplacés dans un repo git séparé avec versioning sémantique &amp; tests de régression sur un corpus d&rsquo;entrées capturées.</li>

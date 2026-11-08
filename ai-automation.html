@@ -145,6 +145,7 @@ tr:last-child td { border-bottom: none; }
   code { word-break: break-word; }
 }
 </style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
 
@@ -154,7 +155,8 @@ tr:last-child td { border-bottom: none; }
   <div class="container">
     <div class="label">Agent Orchestration · System Design</div>
     <h1>Task Router Agent<br>A State-Machine Orchestration Layer on a Markdown File</h1>
-    <p class="subtitle">I designed an LLM-powered task orchestration runtime that routes, executes, and self-heals autonomously. A single Markdown file becomes the agent control plane. Session-independent runtime — edit the file, the work happens in the background regardless of whether any session is open. Below is how the architecture was designed, the trade-offs I made, the measurable results, and the emergent behavior I didn&rsquo;t program for.</p>
+    <p class="subtitle">I designed an LLM-powered task orchestration runtime that routes tasks, runs them, and recovers stuck ones on its own. A single Markdown file becomes the agent control plane. Session-independent runtime — edit the file, the work happened in the background regardless of whether any session is open. Below is how the architecture was designed, the trade-offs I made, the measurable results, and the emergent behavior I didn&rsquo;t program for.</p>
+    <p class="subtitle" style="font-size:0.85rem;opacity:0.75;margin-top:0.6rem">Written in April 2026. The background runner stopped in September 2026 when its login expired; the task board itself is still in daily use.</p>
   </div>
 </div>
 
@@ -164,7 +166,7 @@ tr:last-child td { border-bottom: none; }
 <section>
   <div class="part-label">Part 1</div>
   <h2>The Problem</h2>
-  <p><strong>Context</strong>: Running four concurrent tracks (content production, a first client architecture-review brief, portfolio development, coursework) as a solo operator. Task state lived in scattered tools; re-entering context after every session break cost 15&ndash;30 minutes of warm-up before any real work.</p>
+  <p><strong>Context</strong>: Running four concurrent tracks (content production, a side consulting project, portfolio development, coursework) as a solo operator. Task state lived in scattered tools; re-entering context after every session break cost 15&ndash;30 minutes of warm-up before any real work.</p>
   <p><strong>Product constraint</strong>: I wanted a task system where I could <strong>add work at any time</strong>, and tasks assigned to automation would <strong>process themselves</strong> without requiring me to be at the machine. Close the laptop, come back hours later, find work done.</p>
   <p><strong>Why this matters for agent design</strong>: Most "AI assistants" stop when the chat window closes. They&rsquo;re attached to a session, not to the work. Building an agent runtime that&rsquo;s <em>independent of session lifecycle</em> is a fundamentally different design problem &mdash; and the core shift required for agents to act as infrastructure rather than as tools.</p>
   <div class="takeaway">
@@ -242,7 +244,7 @@ tr:last-child td { border-bottom: none; }
   <div class="decision-card">
     <div class="decision-title">1. Markdown as the Control Plane, not Notion / Airtable / SQL</div>
     <div class="decision-row"><span class="k">Rejected</span><span class="v">Structured databases (Notion, Airtable, Postgres). Schema-enforced, queryable, multi-user ready.</span></div>
-    <div class="decision-row"><span class="k">Chosen</span><span class="v">A single Markdown file with YAML-ish front-matter per task.</span></div>
+    <div class="decision-row"><span class="k">Chosen</span><span class="v">A single Markdown file, with a few labelled fields per task.</span></div>
     <div class="decision-row"><span class="k">Reasoning</span><span class="v"><strong>Latency-to-edit &lt; 1 second</strong>, zero vendor dependency, git-versioned, human-readable without tooling, LLM-parseable without schema inference. The cost &mdash; no schema enforcement &mdash; is recoverable by the state-machine layer (see decision 2).</span></div>
     <div class="decision-row"><span class="k">When to revisit</span><span class="v">If multi-operator concurrent editing becomes a hard requirement, or task volume exceeds ~500 entries where Markdown parsing becomes bottleneck.</span></div>
   </div>
@@ -314,17 +316,10 @@ tr:last-child td { border-bottom: none; }
       <div class="metric-label">Monthly runtime cost</div>
       <div class="metric-note">LLM API only. No separate hosting cost (runs on laptop via <code>launchd</code>).</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-value">100%</div>
-      <div class="metric-label">Critical-action approval rate</div>
-      <div class="metric-note">All destructive / irreversible actions gated behind human-in-the-loop by design, not by bug.</div>
-    </div>
   </div>
 
-  <h4>Efficiency Gains (Conservative Estimate)</h4>
-  <p>Before the system: manual task-list check &amp; routine research tasks consumed an estimated <strong>8&ndash;12 hours / week</strong>. After the system: routine tasks (competitive research, documentation drafting, market scans) are routed to parallel subagents without requiring real-time supervision.</p>
+  <h4>First week, observed</h4>
   <p>Observed first-week output: <strong>5 substantive research / writing tasks completed without active supervision</strong> (representative examples: 260-line competitor analysis, 895-line architectural case study, 18-JD market scan, HR-perspective portfolio review).</p>
-  <p class="metric-note">Methodology: hours-saved estimates from self-reported pre-baseline. Accurate quantification begins week 2 (ongoing).</p>
 </section>
 
 <hr class="divider">
@@ -332,7 +327,7 @@ tr:last-child td { border-bottom: none; }
 <!-- ===== PART 5 ===== -->
 <section>
   <div class="part-label">Part 5</div>
-  <h2>Emergent Behavior (The Core Insight)</h2>
+  <h2>Unexpected Behaviour (An Observation)</h2>
 
   <p>I programmed the decision layer to do one thing: <strong>find tasks marked <code>ready</code> and execute them</strong>. Skip everything else.</p>
 
@@ -344,10 +339,10 @@ tr:last-child td { border-bottom: none; }
     <li><strong>Detected a timezone bug</strong> in a status timestamp I&rsquo;d written manually: <code>running:claude-a:2026-04-20T15:25Z</code> was local time mislabeled as UTC. The skill computed that this timestamp was 2 hours in the future relative to <code>now</code>, flagged it as an anomaly, and asked for clarification.</li>
   </ul>
 
-  <p>None of these behaviors were in the prompt. They emerged from the state-machine design.</p>
+  <p>I hadn&rsquo;t asked for any of this in the prompt. My hypothesis is that typed states made these inconsistencies easy to spot. I haven&rsquo;t run a controlled comparison yet, so treat this as an observation, not a result.</p>
 
   <div class="takeaway">
-    <p>Same LLM. Same task-board. Different agent behavior, depending on whether status is a <em>label</em> or a <em>protocol</em>. A natural-language status field ("waiting", "in progress") gives the model a token to match. A typed state with structured sub-fields gives the model a protocol to reason about. The takeaway I&rsquo;d package for a product team: <strong>structured state is what turns agents from execution bots into reasoning partners &mdash; not better prompts</strong>.</p>
+    <p>My working theory: the same model behaves differently depending on whether status is a <em>label</em> or a <em>protocol</em>. A natural-language status field ("waiting", "in progress") gives the model a token to match. A typed state with structured sub-fields gives the model a protocol to reason about. The takeaway I&rsquo;d package for a product team: <strong>structured state is what turns agents from execution bots into reasoning partners &mdash; not better prompts</strong>.</p>
   </div>
 
   <p>This has implications for how agent systems should be designed. Most teams iterate on prompts when agent behavior is inadequate. The higher-leverage move is often to change the <em>type system</em> that the agent operates within.</p>
@@ -361,7 +356,7 @@ tr:last-child td { border-bottom: none; }
   <h2>Generalization &amp; Next Steps</h2>
 
   <h4>Pattern Transfer</h4>
-  <p>The architecture is deliberately not task-automation-specific. The same five-layer pattern (control-plane file + event-driven scheduler + stateless executor + typed state machine + append-only audit log) maps cleanly to several workflow categories listed in a current client brief (Shopify operator) I&rsquo;m scoping for architecture review:</p>
+  <p>The architecture is deliberately not task-automation-specific. The same five-layer pattern (control-plane file + event-driven scheduler + stateless executor + typed state machine + append-only audit log) maps cleanly to several workflow categories common in e-commerce operations:</p>
 
   <table>
     <tr><th>Workflow</th><th>Control Plane</th><th>Decision Layer Task</th></tr>
@@ -373,7 +368,7 @@ tr:last-child td { border-bottom: none; }
 
   <p>The same state-machine discipline (<code>ready</code> / <code>blocked:*</code> / <code>running:*</code> / <code>done</code>) applies to all of them. The only workflow-specific component is the prompt template in the decision layer. Infrastructure is shared.</p>
 
-  <h4>Planned Evolution</h4>
+  <h4>What I planned at the time (April 2026)</h4>
   <ul>
     <li><strong>Observability surface</strong>: local HTML dashboard served via <code>launchd</code> showing task throughput, error rates, and latency distribution over time.</li>
     <li><strong>Prompt version control</strong>: decision-layer prompts moved to a separate git repository with semantic versioning &amp; regression tests against a captured input corpus.</li>
